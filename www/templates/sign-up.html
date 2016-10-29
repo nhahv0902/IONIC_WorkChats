@@ -1,40 +1,32 @@
 <ion-view hide-nav-bar="true">
   <ion-content class="padding text-center">
-    <div style="height: 25px"></div>
 
-    <img src="img/logo.png" style="width: 150px; height: auto">
+    <img src="img/logo.png" style="width: 150px; height: auto; margin-top: 50px">
 
-    <h2>Sign up with Work chats</h2>
-    <div style="height: 25px"></div>
+    <h3>Sign up with Work chats</h3>
 
-    <div class="" style="width: 50%; margin-left:25%">
-      <ion-list class="border-none">
-        <ion-item class="item-input border-bottom">
-          <input type="text" ng-model="email" placeholder="Email" style=" font-weight: normal;">
-        </ion-item>
+    <div class="" style="width: 50%; margin-left:25%; margin-top: 30px">
+      <form class="signUpForm">
+        <ion-list class="border-none">
+          <ion-item class="item-input border-bottom">
+            <input type="text"  name ="name"ng-model="signUp.email" placeholder="Email" style=" font-weight: normal;" ng-required="true">
+          </ion-item>
 
-        <ion-item class="item-input border-bottom">
-          <input type="password" ng-model="password" placeholder="Password" style=" font-weight: normal;">
-        </ion-item>
+          <ion-item class="item-input border-bottom">
+            <input type="password" name="password" ng-model="signUp.password" placeholder="Password" style=" font-weight: normal;" ng-required="true">
+          </ion-item>
 
-        <ion-item class="item-input border-bottom">
-          <input type="password" ng-model="confirmPassword" placeholder="Confirm Password" style=" font-weight: normal;">
-        </ion-item>
-      </ion-list>
+          <ion-item class="item-input border-bottom">
+            <input type="password" name="confirmPassword" ng-model="signUp.confirmPassword" placeholder="Confirm Password" style=" font-weight: normal;" ng-required="true">
+          </ion-item>
+        </ion-list>
+      </form>
     </div>
 
     <div class="padding">
 
-        <button class="button button-medium button-positive" ng-disable="loginForm.$invalid" ng-click="login()" style="padding-left: 30px; padding-right: 30px">
-          Sign Up
-        </button>
-
-      <div style="height: 10px"></div>
-      <p>By continuing, you are indicate that you agree to the
-        <href="#">positive">Privacy Policy
-        </a>
-        and
-        <a href="#" class="positive">Terms</a>.</p>
-    </div>
-  </ion-content>
-</ion-view>
+      <button class="button button-medium button-positive" ng-disable="!signUpForm.email.$valid && !signUpForm.password.valid && !signUpForm.confirmPassword.valid" ng-click="btnSignUp()" style="padding-left: 30px; padding-right: 30px">
+        Sign Up
+      </button>
+    </ion-content>
+  </ion-view>

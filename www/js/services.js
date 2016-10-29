@@ -47,3 +47,23 @@ appServices.factory('Chats', function () {
 		}
 	};
 });
+
+
+appServices.factory('Firebase', function () {
+
+	var message = "Messages";
+	var account = "Accounts";
+	var topic = "Topics";
+
+	return {
+		keyMessage: function () {
+			return message;
+		},
+		keyAccount: function () {
+			return account;
+		},
+		keyTopic: function () {
+			return topic;
+		}
+	}
+});
