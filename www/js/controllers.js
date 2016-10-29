@@ -28,8 +28,12 @@ appControllers.controller('AccountCtrl', function ($scope) {
 });
 
 
-appControllers.controller('SignInCtrl', function ($scope) {
-
+appControllers.controller('SignInCtrl', function ($scope, $state) {
+	console.log("SignInCtrl");
+	$scope.btnSignIn = function () {
+		console.log("singIn");
+		$state.go('tab.dash');
+	};
 });
 
 

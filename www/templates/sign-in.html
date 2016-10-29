@@ -13,7 +13,7 @@
 
         <ion-list class="border-none">
           <ion-item class="item-input border-bottom">
-            <input type="text" placeholder="Email" ng-model="loginData.email" ng-required="true" alt="" style=" font-weight: normal;">
+            <input type="email" placeholder="Email" ng-model="loginData.email" ng-required="true" alt="" style=" font-weight: normal; background: #FFFFFF">
           </ion-item>
           <ion-item class="item-input border-bottom">
             <input type="password" placeholder="Password" ng-model="loginData.password" ng-required="true" style=" font-weight: normal;">
@@ -21,11 +21,7 @@
         </ion-list>
 
         <div class="padding">
-          <!-- <a class="button button-clear button-large" href="#/tab/activities">
-            Continue
-          </a> -->
-
-          <button class="button button-medium button-positive" ng-disable="loginForm.$invalid" ng-click="login()" style="padding-left: 40px; padding-right: 40px">
+          <button class="button button-medium button-positive"  ng-click="btnSignIn()" style="padding-left: 40px; padding-right: 40px">
             Sign In
           </button>
         </div>

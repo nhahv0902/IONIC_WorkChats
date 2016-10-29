@@ -6,7 +6,7 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 
-var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services']);
+var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngStorage', 'ngCordova']);
 
 app.run(function ($ionicPlatform) {
 	$ionicPlatform.ready(function () {
@@ -22,6 +22,16 @@ app.run(function ($ionicPlatform) {
 			StatusBar.styleDefault();
 		}
 	});
+
+	// Initialize Firebase
+	var config = {
+		apiKey: "AIzaSyDgoXpAj3fUnKZsD3vlg-iIpGpDdt2MOno",
+		authDomain: "work-chats.firebaseapp.com",
+		databaseURL: "https://work-chats.firebaseio.com",
+		storageBucket: "work-chats.appspot.com",
+		messagingSenderId: "160034864745"
+	};
+	firebase.initializeApp(config);
 });
 
 app.config(function ($stateProvider, $urlRouterProvider) {
