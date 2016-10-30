@@ -4,7 +4,7 @@ appServices.factory('Chats', function () {
 	// Might use a resource here that returns a JSON array
 	// Some fake testing data
 	var chats = [{
-			id: "1",
+			id: "123456789",
 			friendType: "Messenger",
 			name: "felix",
 			face: 'img/user01.jpg',
@@ -12,7 +12,7 @@ appServices.factory('Chats', function () {
 			activeTime: "Active today"
             },
 		{
-			id: "2",
+			id: "987654321",
 			friendType: "facebook",
 			name: "Eric",
 			face: 'img/user02.jpg',

@@ -62,12 +62,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 		}
 	})
 
-	.state('tab.chats', {
-			url: '/chats',
+	.state('tab.members', {
+			url: '/members',
 			views: {
-				'tab-chats': {
-					templateUrl: 'templates/tab-chats.html',
-					controller: 'ChatsCtrl'
+				'tab-members': {
+					templateUrl: 'templates/tab-member.html',
+					controller: 'MembersCtrl'
 				}
 			}
 		})
@@ -83,14 +83,15 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 		}
 	})
 
-	.state('tab.chat-detail', {
+	.state('tab.chat-user', {
 		url: '/chats/:chatId',
 		views: {
-			'tab-chats': {
+			'tab-recent': {
 				templateUrl: 'templates/chat-detail.html',
 				controller: 'ChatDetailCtrl'
 			}
 		}
+
 	})
 
 	.state('tab.account', {

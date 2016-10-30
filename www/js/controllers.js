@@ -13,7 +13,7 @@ appControllers.controller('RecentCtrl', function ($scope, Chats) {
 	};
 });
 
-appControllers.controller('ChatsCtrl', function ($scope, Chats) {
+appControllers.controller('MembersCtrl', function ($scope, Chats) {
 	// With the new view caching in Ionic, Controllers are only called
 	// when they are recreated or on app start, instead of every page change.
 	// To listen for when this page is active (for example, to refresh data),
@@ -30,23 +30,24 @@ appControllers.controller('ChatsCtrl', function ($scope, Chats) {
 
 appControllers.controller('ChatDetailCtrl', function ($rootScope, $scope, $stateParams, Firebase, Chats) {
 
+	$scope.historyBack = function () {
+		window.history.back();
+	};
 
-
-	$scope.chat = Chats.get($stateParams.chatId);
+	var idSend = "123456789";
+	var idReceiver = $stateParams.chatId;
+	if(idReceiver === "123456789") {
+		idSend = "987654321";
+	}
 
 	var keyMessage = Firebase.keyMessage();
-	var idSend = "123456789";
 	var date = new Date();
 
-
-
-
-
+	var url = keyMessage + '/' + idSend + '/' + idReceiver;
+	var urlReceiver = keyMessage + '/' + idReceiver + '/' + idSend;
 	$scope.sendChat = function (chatText) {
 
 		var time = date.getTime();
-		var idReceiver = "987654321";
-
 		var objectMesaage = {
 
 			time: time,
@@ -54,9 +55,37 @@ appControllers.controller('ChatDetailCtrl', function ($rootScope, $scope, $state
 			idReceiver: idReceiver,
 			text: chatText
 		};
-		firebase.database()
-			.ref(keyMessage + '/' + idSend + '/' + idReceiver)
-			.set(objectMesaage);
+		var key = firebase.database()
+			.ref()
+			.child(url)
+			.push()
+			.key();
+
+		firebase()
+			.database()
+			.ref()
+			.child(url + '/' + key)
+			.set(objectMesaage, function (error) {
+				if(error) {
+					alert("Data could not be saved." + error);
+				} else {
+					alert("Data saved successfully.");
+
+					firebase()
+						.database()
+						.ref()
+						.child(urlReceiver + '/' + key)
+						.set(objectMesaage, function (error) {
+							if(error) {
+								alert("Data could not be saved." + error);
+							} else {
+								alert("Data saved successfully.");
+							}
+						});
+
+				}
+			});
+
 	};
 
 	var reply = function () {
