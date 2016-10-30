@@ -120,7 +120,7 @@ appControllers.controller('SignInCtrl', function ($scope, $state, $ionicLoading,
 				console.log($localStorage.user.email);
 
 				$ionicLoading.hide()
-				$state.go('tab.dash');
+				$state.go('tab.recent');
 
 
 
@@ -213,6 +213,11 @@ appControllers.controller('SignUpCtrl', function ($scope, $ionicPopup, $timeout,
 	}
 });
 
+
+appControllers.controller('GroupsCtrl', function ($scope, Groups) {
+	console.log("Groups");
+	$scope.groups = Groups.all();
+});
 
 appControllers.controller('ForgotPasswordCtrl', function ($scope) {
 

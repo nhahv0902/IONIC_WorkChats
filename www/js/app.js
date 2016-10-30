@@ -36,13 +36,7 @@ app.run(function ($ionicPlatform) {
 
 app.config(function ($stateProvider, $urlRouterProvider) {
 
-	// Ionic uses AngularUI Router which uses the concept of states
-	// Learn more here: https://github.com/angular-ui/ui-router
-	// Set up the various states which the app can be in.
-	// Each state's controller can be found in controllers.js
 	$stateProvider
-
-	// setup an abstract state for the tabs directive
 
 
 		.state('tab', {
@@ -78,6 +72,16 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 			}
 		})
 		//
+
+	.state('tab.groups', {
+		url: '/groups',
+		views: {
+			'tab-groups': {
+				templateUrl: 'templates/tab-groups.html',
+				controller: 'GroupsCtrl'
+			}
+		}
+	})
 
 	.state('tab.chat-detail', {
 		url: '/chats/:chatId',

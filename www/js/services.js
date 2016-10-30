@@ -81,3 +81,67 @@ appServices.factory('Firebase', function () {
 		}
 	}
 });
+
+appServices.factory('Groups', function () {
+	var rooms = [
+		{
+			id: "room_a",
+			roomType: "group",
+			thumbnail: "img/thumbnail01.jpg",
+			title: "I Love Coffee",
+			members: "Felix, Eric, Diamond",
+			activeTime: "Active today",
+			userList: ["213", "1", "2"]
+            },
+		{
+			id: "room_b",
+			roomType: "group",
+			thumbnail: "img/thumbnail02.jpg",
+			title: "Go shopping",
+			members: "Eric, Apple, Diamond",
+			activeTime: "Active today",
+			userList: ["2", "3", "213"]
+            },
+		{
+			id: "room_c",
+			roomType: "ms_friend",
+			thumbnail: "img/user01.jpg",
+			title: "felix",
+			members: "Felix, Diamond",
+			activeTime: "Active 1h ago",
+			userList: ["213", "1"]
+            },
+		{
+			id: "room_d",
+			roomType: "fb_friend",
+			thumbnail: "img/user02.jpg",
+			title: "Eric",
+			members: "Eric, Diamond",
+			activeTime: "Active 1h ago",
+			userList: ["213", "2"]
+            },
+		{
+			id: "room_e",
+			roomType: "group",
+			thumbnail: "img/thumbnail03.jpg",
+			title: "Ionic",
+			members: "Eric, Apple, Mike, Diamond",
+			activeTime: "11:00 am",
+			userList: ["2", "3", "5", "213"]
+            },
+		{
+			id: "room_f",
+			roomType: "group",
+			thumbnail: "img/thumbnail04.jpg",
+			title: "Rockers",
+			members: "felix, Eric, Diamond, Mike",
+			activeTime: "12:15 am",
+			userList: ["1", "2", "213", "5"]
+            }
+        ];
+	return {
+		all: function () {
+			return rooms;
+		}
+	}
+});
