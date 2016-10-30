@@ -12,7 +12,7 @@
   <ion-content class="padding">
     <div style="height: 10px"></div>
     <div class="list border-none" ng-repeat="chat in chatList" >
-      <div class="item item-avatar-s chat-friend" ng-if="chat.idSend==123456789">
+      <div class="item item-avatar-s chat-friend" ng-if="chat.idSend != idSend">
         <img ng-src="{{chat.avatar}}">
 
         <span class="badge avatar-badge avatar-badge-xs" ng-class="{'badge-positive':chat.user.friendType=='Messenger', 'badge-stable':chat.user.friendType=='facebook'}">
@@ -24,7 +24,7 @@
           {{chat.text}}</p>
       </div>
 
-      <div class="item item-avatar-right-s chat-me text-right" ng-if="chat.idSend == 987654321">
+      <div class="item item-avatar-right-s chat-me text-right" ng-if="chat.idSend == idSend">
         <img ng-src="{{chat.avatar}}">
 
         <p class="chat-text positive-bg text-left">
@@ -35,7 +35,7 @@
 
   <ion-footer-bar class="bar-light chat-bar">
     <form class="row" name="theform">
-      <input class="col col-75" type="text" ng-model="chatText" placeholder="Write message" ng-minlength="1" ng-required="true">
+      <input class="col col-75" type="text" ng-model="chatText" ng-minlength="1" ng-required="true">
       <button class="col button" ng-click="sendChat(chatText); chatText = null" ng-disabled="theform.$invalid">Send</button>
     </form>
   </ion-footer-bar>
