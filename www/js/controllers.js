@@ -28,30 +28,44 @@ appControllers.controller('MembersCtrl', function ($scope, Chats) {
 	};
 });
 
-appControllers.controller('ChatDetailCtrl', function ($rootScope, $scope, $stateParams, Firebase, Chats) {
+appControllers.controller('ChatDetailCtrl', function ($rootScope, $localStorage, $scope, $stateParams, Firebase, Chats, $ionicScrollDelegate) {
 
 	$scope.historyBack = function () {
 		window.history.back();
 	};
 
-	var idSend = "123456789";
+	$scope.chat = {};
+	$scope.chat.name = "hoang Van Nha";
+	$scope.idSend = "123456789";
 	var idReceiver = $stateParams.chatId;
 	if(idReceiver === "123456789") {
-		idSend = "987654321";
+		$scope.idSend = "987654321";
 	}
+
+
+	$scope.chatList = [];
 
 	var keyMessage = Firebase.keyMessage();
 	var date = new Date();
 
-	var url = keyMessage + '/' + idSend + '/' + idReceiver;
-	var urlReceiver = keyMessage + '/' + idReceiver + '/' + idSend;
+	var url = keyMessage + '/' + $scope.idSend + '/' + idReceiver;
+	var urlReceiver = keyMessage + '/' + idReceiver + '/' + $scope.idSend;
+
+	firebase.database()
+		.ref(url)
+		.on('child_added', function (data) {
+			console.log(data.val());
+			$scope.chatList.push(data.val());
+			$ionicScrollDelegate.scrollBottom(true);
+		});
+
 	$scope.sendChat = function (chatText) {
 
 		var time = date.getTime();
 		var objectMesaage = {
 
 			time: time,
-			idSend: idSend,
+			idSend: $scope.idSend,
 			idReceiver: idReceiver,
 			text: chatText
 		};
@@ -59,27 +73,24 @@ appControllers.controller('ChatDetailCtrl', function ($rootScope, $scope, $state
 			.ref()
 			.child(url)
 			.push()
-			.key();
+			.key;
 
-		firebase()
-			.database()
+		firebase.database()
 			.ref()
 			.child(url + '/' + key)
 			.set(objectMesaage, function (error) {
 				if(error) {
-					alert("Data could not be saved." + error);
+					console.log("write date error");
 				} else {
-					alert("Data saved successfully.");
 
-					firebase()
-						.database()
+					firebase.database()
 						.ref()
 						.child(urlReceiver + '/' + key)
 						.set(objectMesaage, function (error) {
 							if(error) {
-								alert("Data could not be saved." + error);
+								console.log("write date error");
 							} else {
-								alert("Data saved successfully.");
+								console.log("write date success");
 							}
 						});
 
@@ -87,20 +98,6 @@ appControllers.controller('ChatDetailCtrl', function ($rootScope, $scope, $state
 			});
 
 	};
-
-	var reply = function () {
-		var userId;
-		for(var i = 0; i < $scope.room.userList.length; i++) {
-			if($scope.room.userList[i] != $rootScope.currentUserID) {
-				userId = $scope.room.userList[i];
-			}
-		}
-		var chatText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-		Chat.add(chatText, $stateParams.roomId, userId);
-		$scope.chatList = Chat.getByRoom($stateParams.roomId);
-	};
-
-
 });
 
 appControllers.controller('AccountCtrl', function ($scope) {
