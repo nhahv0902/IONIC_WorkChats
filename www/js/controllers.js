@@ -1,8 +1,17 @@
 var appControllers = angular.module('starter.controllers', []); // Use for all controller of application.
 
+appControllers.controller('RecentCtrl', function ($scope, Chats) {
+	$scope.chats = Chats.all();
+	$scope.remove = function (chat) {
+		Chats.remove(chat);
+	};
 
+	$scope.activities = Chats.all();
 
-appControllers.controller('DashCtrl', function ($scope) {});
+	$scope.remove = function (item) {
+		Room.remove(item);
+	};
+});
 
 appControllers.controller('ChatsCtrl', function ($scope, Chats) {
 	// With the new view caching in Ionic, Controllers are only called
@@ -19,7 +28,7 @@ appControllers.controller('ChatsCtrl', function ($scope, Chats) {
 	};
 });
 
-appControllers.controller('ChatDetailCtrl', function ($rootScope, $scope, $stateParams, Firebase) {
+appControllers.controller('ChatDetailCtrl', function ($rootScope, $scope, $stateParams, Firebase, Chats) {
 
 
 
@@ -72,24 +81,75 @@ appControllers.controller('AccountCtrl', function ($scope) {
 });
 
 
-appControllers.controller('SignInCtrl', function ($scope, $state) {
+appControllers.controller('SignInCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, $ionicPopup, $localStorage) {
 
-	firebase.database()
-		.ref('users/' + "nhahv")
-		.set({
-			username: "name",
-			email: "email",
-			profile_picture: "imageUrl"
-		});
-	console.log("SignInCtrl");
+	$scope.signIn = {};
+
 	$scope.btnSignIn = function () {
 		console.log("singIn");
-		$state.go('tab.dash');
+
+		var email = $scope.signIn.email;
+		var password = $scope.signIn.password;
+
+		if(!email || !password) {
+			var alertPopup = $ionicPopup.alert({
+				template: 'Email or password do not match',
+				okText: 'OK'
+			});
+			return;
+		}
+
+		$ionicLoading.show();
+		firebase.auth()
+			.signInWithEmailAndPassword(email, password)
+			.then(function (user) {
+				console.log(user);
+
+				$localStorage.user = {};
+
+				var name = user.displayName;
+				var email = user.email;
+				var photoUrl = user.photoURL;
+				var uid = user.uid;
+
+				$localStorage.user.email = email;
+				$localStorage.user.uid = uid;
+
+
+				console.log($localStorage.user.uid);
+				console.log($localStorage.user.email);
+
+				$ionicLoading.hide()
+				$state.go('tab.dash');
+
+
+
+			})
+			.catch(function (error) {
+				// Handle Errors here.
+				var errorCode = error.code;
+				var errorMessage = error.message;
+				// ...
+				var myPopup = $ionicPopup.show({
+					title: 'Sign in  fault',
+					subTitle: 'Email  or password do not match',
+					buttons: [{
+						text: '<b>Ok</b>',
+						type: 'button-positive',
+						onTap: function (e) {
+							myPopup.close();
+						}
+					}]
+				});
+			});
+
+
+
 	};
 });
 
 
-appControllers.controller('SignUpCtrl', function ($scope, $ionicPopup, $timeout, $mdDialog, $state) {
+appControllers.controller('SignUpCtrl', function ($scope, $ionicPopup, $timeout, $mdDialog, $state, $ionicLoading, $ionicPopup) {
 
 	console.log($mdDialog);
 	$scope.signUp = {};
@@ -101,14 +161,10 @@ appControllers.controller('SignUpCtrl', function ($scope, $ionicPopup, $timeout,
 		var password = $scope.signUp.password;
 		var confirmPassword = $scope.signUp.confirmPassword;
 
-		if(!email) {
+		if(!email || !password || !confirmPassword) {
 			var alertPopup = $ionicPopup.alert({
 				template: 'Email do not',
 				okText: 'OK'
-			});
-
-			alertPopup.then(function (res) {
-				console.log('Thank you for not eating my delicious ice cream cone');
 			});
 			return;
 		}
@@ -121,23 +177,40 @@ appControllers.controller('SignUpCtrl', function ($scope, $ionicPopup, $timeout,
 			return;
 		}
 
+		$ionicLoading.show();
 		firebase.auth()
 			.createUserWithEmailAndPassword(email, password)
-			.catch(function (error) {
-				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
+			.then(function (user) {
+				if(user) {
+					console.log(user);
+					$state.go('singIn');
+					$ionicLoading.hide()
+				}
+			})
 
-				console.log(errorCode);
-				console.log(errorMessage);
-				return;
+		.catch(function (error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
 
+			console.log(errorCode);
+			console.log(errorMessage);
+
+			console.log(error);
+			$ionicLoading.hide()
+			var myPopup = $ionicPopup.show({
+				title: 'Sign up account fault',
+				subTitle: 'Email had exists',
+				buttons: [{
+					text: '<b>Ok</b>',
+					type: 'button-positive',
+					onTap: function (e) {
+						myPopup.close();
+					}
+					}]
 			});
-
-
-		$state.go('singIn');
+		});
 	}
-
 });
 
 

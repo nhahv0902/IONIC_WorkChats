@@ -4,31 +4,45 @@ appServices.factory('Chats', function () {
 	// Might use a resource here that returns a JSON array
 	// Some fake testing data
 	var chats = [{
-		id: 0,
-		name: 'Ben Sparrow',
-		lastText: 'You on your way?',
-		face: 'img/ben.png'
-  }, {
-		id: 1,
-		name: 'Max Lynx',
-		lastText: 'Hey, it\'s me',
-		face: 'img/max.png'
-  }, {
-		id: 2,
-		name: 'Adam Bradleyson',
-		lastText: 'I should buy a boat',
-		face: 'img/adam.jpg'
-  }, {
-		id: 3,
-		name: 'Perry Governor',
-		lastText: 'Look at my mukluks!',
-		face: 'img/perry.png'
-  }, {
-		id: 4,
-		name: 'Mike Harrington',
-		lastText: 'This is wicked good ice cream.',
-		face: 'img/mike.png'
-  }];
+			id: "1",
+			friendType: "Messenger",
+			name: "felix",
+			face: 'img/user01.jpg',
+			email: 'hi@weburner.com',
+			activeTime: "Active today"
+            },
+		{
+			id: "2",
+			friendType: "facebook",
+			name: "Eric",
+			face: 'img/user02.jpg',
+			email: 'hi@weburner.com',
+			activeTime: "Active 1h ago"
+            },
+		{
+			id: "3",
+			name: "Apple",
+			friendType: "Messenger",
+			face: 'img/user03.jpg',
+			email: 'hi@weburner.com',
+			activeTime: "Active today"
+            },
+		{
+			id: "213",
+			name: "Diamond",
+			friendType: "Messenger",
+			face: 'img/user04.jpg',
+			email: 'hi@weburner.com',
+			activeTime: "Active 3m ago"
+            },
+		{
+			id: "5",
+			name: "Mike",
+			friendType: "facebook",
+			face: 'img/user05.jpg',
+			email: 'hi@weburner.com',
+			activeTime: "Active today"
+            }];
 
 	return {
 		all: function () {
