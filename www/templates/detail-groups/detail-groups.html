@@ -1,0 +1,38 @@
+<ion-view view-title="Groups">
+
+  <ion-nav-buttons side="primary">
+    <button nav-direction="back" class="button button-clear button-icon button-positive icon ion-ios-arrow-back"
+            ng-click="backToGroups()"></button>
+  </ion-nav-buttons>
+
+  <ion-nav-buttons side="right" class="bar-positive">
+    <button class="button button-clear button-icon button-positive icon ion-compose" ng-click="newTopic()"></button>
+  </ion-nav-buttons>
+
+  <ion-nav-title>
+    <a ng-href="{{room.settingURL}}">
+      {{groups.name}}
+    </a>
+  </ion-nav-title>
+
+  <ion-content>
+    <h1>List topics</h1>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="topic in topics"
+                type="item-text-wrap" href="#/masterDetail/messages">
+        <img ng-src="{{topic.thumbnail}}">
+        <h2>{{topic.name}}</h2>
+        <p>{{topic.members}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+      </ion-item>
+    </ion-list>
+
+
+    <h1>List member</h1>
+
+    <div class="">
+
+    </div>
+  </ion-content>
+</ion-view>
