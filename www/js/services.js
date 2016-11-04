@@ -320,6 +320,7 @@ appServices.factory('MessageService', function () {
 appServices.factory('ChatsSingle', function ($ionicScrollDelegate, $firebaseArray) {
 
   var chats = [];
+  var chats2 = [];
 
   return {
     all: function () {
@@ -335,14 +336,21 @@ appServices.factory('ChatsSingle', function ($ionicScrollDelegate, $firebaseArra
       chats = $firebaseArray(ref);
       $ionicScrollDelegate.scrollBottom(true);
 
-
-      // firebase.database()
-      //   .ref(url)
-      //   .on('child_added', function (data) {
-      //     console.log(data.val());
-      //     chats.push(data.val());
-      //     $ionicScrollDelegate.scrollBottom(true);
-      //   });
+      var ref2 = firebase.database()
+        .ref()
+        .child("Messages")
+        .child(idReceiver)
+        .child(idSend);
+      chats2 = $firebaseArray(ref2);
+    },
+    send: function (objectMessage) {
+      chats.$add(objectMessage).then(function (data) {
+        if (data) {
+          chats2.$add(objectMessage);
+          console.log("message added");
+          $ionicScrollDelegate.scrollBottom(true);
+        }
+      })
     }
   }
 });

@@ -168,7 +168,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     })
 
     .state('masterDetail.messages', {
-      url: '/messages',
+      url: '/messages/:groupId',
       views: {
         'message-list': {
           templateUrl: 'templates/multiple-view/messages.html',
