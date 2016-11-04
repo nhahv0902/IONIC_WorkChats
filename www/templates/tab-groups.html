@@ -22,27 +22,26 @@
 </style>
 
 <ion-view view-title="Groups" id="tab-groups">
-
   <ion-content>
     <div class="row" ng-repeat="group in groups">
-      <div class="col col-50" ng-repeat="room in groups">
+      <div class="col col-100">
         <div class="list card">
-          <a nav-direction="forward" class="item item-avatar item-avatar-center item-avatar-l text-center"
-             href="#/tab/groups/{{group.id}}">
+          <a nav-direction="forward" class="item item-avatar item-avatar-center item-avatar-l text-center" href="#/room/{{room.id}}">
             <img ng-src="{{room.thumbnail}}">
 
             <h3>
-              <small>{{room.title}}</small>
+              <small>{{group.name}}</small>
             </h3>
 
-            <p>{{room.activeTime}}</p>
+            <p>{{group.maphong}}</p>
           </a>
 
-          <a nav-direction="forward" class="item item-divider text-center" href="#/tab/groups/{{group.id}}">
+          <a nav-direction="forward" class="item item-divider text-center" href="#/room/{{room.id}}">
             <p>{{room.members}}</p>
           </a>
         </div>
       </div>
     </div>
+
   </ion-content>
 </ion-view>

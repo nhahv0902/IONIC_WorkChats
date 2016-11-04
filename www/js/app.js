@@ -113,7 +113,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
 
-
+    .state('change', {
+      url: '/account',
+      templateUrl: 'templates/popup/change.html',
+      controller: 'AccountCtrl'
+    })
     .state('singIn', {
       url: '/signIn',
       templateUrl: 'templates/sign-in/sign-in.html',

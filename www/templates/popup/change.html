@@ -1,0 +1,60 @@
+<style>
+    .bar.bar-footer {
+        border: 0px !important;
+        border-bottom-color: transparent !important;
+        background-image: none;
+        border-bottom: none;
+    }
+</style>
+
+<ion-modal-view hide-nav-bar="true">
+    <ion-content class="padding text-center">
+        <div style="height: 25px"></div>
+        <img id="logo" src="img/logo.svg" style="width: 62px; height: auto">
+
+        <h2>Change your information</h2>
+
+        <div style="height: 25px"></div>
+        <ion-list class="border-none">
+            <ion-item class="item-input border-bottom">
+            <label>Email: </label>
+                <input type="email" name ="email" ng-model="change.useremail">
+            </ion-item>
+        </ion-list>
+        <ion-list class="border-none">
+            <ion-item class="item-input border-bottom">
+            <label>Name: </label>
+                <input type="text" name="username" ng-model="change.username" >
+            </ion-item>
+        </ion-list>
+        <ion-list class="border-none">
+            <ion-item class="item-input border-bottom">
+            <label>Phone: </label>
+                <input type="text" name="phone" ng-model="change.userphone">
+            </ion-item>
+        </ion-list>
+        <ion-list class="border-none">
+            <ion-item class="item-input border-bottom">
+            <label>Address: </label>
+                <input type="text" name="address" ng-model="change.useraddress">
+            </ion-item>
+        </ion-list>
+        <ion-list class="border-none">
+            <ion-item class="">
+                <input type="radio" value="nam" ng-model="change.usersex">
+               <label>Nam</label>
+                <input type="radio" value="nu" ng-model="change.usersex">
+                <label>Nu</label>
+            </ion-item>
+        </ion-list>
+        <div class="padding">
+            <a class="button button-clear" ng-click="saveChange();">
+                OK
+            </a>
+        </div>
+    </ion-content>
+
+    <ion-footer-bar class="row">
+        <a class="col button button-clear button-small" ng-click="closeModal();">Close</a>
+    </ion-footer-bar>
+</ion-modal-view>
