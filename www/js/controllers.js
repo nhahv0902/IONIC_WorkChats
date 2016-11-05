@@ -101,7 +101,14 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
     }
   });
   $scope.saveChange = function(){
-    
+    firebase.auth().onAuthStateChanged(function(user) {
+      //alert($scope.change.useremail);
+      user.updateEmail($scope.change.useremail).then(function() {
+        // Update successful.
+      }, function(error) {
+        // An error happened.
+      });
+    });
     firebase.database().ref('Users/' + $scope.change.userId).set({
       name: $scope.change.username,
       sex: $scope.change.usersex,
