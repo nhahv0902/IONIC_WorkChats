@@ -148,13 +148,17 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
 });
 
 
-appControllers.controller('GroupsCtrl', function ($scope, Groups) {
+appControllers.controller('GroupsCtrl', function ($scope, Groups, $firebaseArray) {
  $scope.groups = [];
-  var commentsRef = firebase.database().ref('Groups').orderByChild('maphong');
-  commentsRef.on('child_added', function(snapshot) {    
+  var commentsRef = firebase.database().ref('GroupMember');
+  commentsRef.on('child_added', function(snapshot) {  
+
+    // console.log(snapshot.key);  
+      // console.log(snapshot.val());
+      // console.log(snapshot.val().infomation.name)
       $scope.groups.push({
-          maphong: snapshot.val().maphong,
-          name: snapshot.val().name
+          maphong: snapshot.key,
+          name: snapshot.val().infomation.name
       });
   });
 });
