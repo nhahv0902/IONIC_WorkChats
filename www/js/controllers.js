@@ -161,7 +161,6 @@ appControllers.controller('GroupsCtrl', function ($scope, Groups, $firebaseArray
     
   var commentsRef = firebase.database().ref('GroupMember');
   commentsRef.on('child_added', function(snapshot) {
-  console.log(snapshot.val().infomation.address);  
       $scope.groups.push({
           maphong: snapshot.key,
           name: snapshot.val().infomation.name,
