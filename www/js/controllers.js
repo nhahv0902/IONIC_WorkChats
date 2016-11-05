@@ -8,7 +8,8 @@ appControllers.controller('MembersCtrl', function ($scope, Chats) {
   };
 });
 
-appControllers.controller('ChatDetailCtrl', function ($rootScope, $localStorage, $scope, $stateParams, ChatsSingle, Chats, $ionicScrollDelegate) {
+appControllers.controller('ChatDetailCtrl', function ($rootScope, $localStorage, $scope, $stateParams,
+                                                      ChatsSingle, Chats, $ionicScrollDelegate, $firebaseArray) {
 
   $scope.historyBack = function () {
     window.history.back();
@@ -37,6 +38,9 @@ appControllers.controller('ChatDetailCtrl', function ($rootScope, $localStorage,
   ChatsSingle.get($scope.idSend, idReceiver);
   $scope.chatList = ChatsSingle.all();
 
+  ChatsSingle.getIndex(1);
+
+
   console.log($scope.chatList);
   $scope.sendChat = function (chatText) {
 
@@ -50,62 +54,33 @@ appControllers.controller('ChatDetailCtrl', function ($rootScope, $localStorage,
     };
 
     ChatsSingle.send(objectMessage);
-    /*
-     var key = firebase.database()
-     .ref()
-     .child(url)
-     .push()
-     .key;
-
-     firebase.database()
-     .ref()
-     .child(url + '/' + key)
-     .set(objectMesaage, function (error) {
-     if(error) {
-     console.log("write date error");
-     } else {
-
-     firebase.database()
-     .ref()
-     .child(urlReceiver + '/' + key)
-     .set(objectMesaage, function (error) {
-     if(error) {
-     console.log("write date error");
-     } else {
-     console.log("write date success");
-     }
-     });
-
-     }
-     });
-
-     */
   };
 });
 
 appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
   $scope.change = {};
-  firebase.auth().onAuthStateChanged(function(user) {
+  firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       $scope.change.useremail = user.email;
       $scope.change.userId = user.uid;
-    var userId = user.uid;
-    return firebase.database().ref('/Users/' + userId).once('value').then(function(snapshot){
-      $scope.change.userphone = snapshot.val().phone;
-      $scope.change.usersex = snapshot.val().sex;
-      $scope.change.useraddress = snapshot.val().address;
-      $scope.change.username = snapshot.val().name;
-    });
+      var userId = user.uid;
+      return firebase.database().ref('/Users/' + userId).once('value').then(function (snapshot) {
+        $scope.change.userphone = snapshot.val().phone;
+        $scope.change.usersex = snapshot.val().sex;
+        $scope.change.useraddress = snapshot.val().address;
+        $scope.change.username = snapshot.val().name;
+      });
     } else {
       console.log('not log in');
     }
   });
-  $scope.saveChange = function(){
-    firebase.auth().onAuthStateChanged(function(user) {
+
+  $scope.saveChange = function () {
+    firebase.auth().onAuthStateChanged(function (user) {
       //alert($scope.change.useremail);
-      user.updateEmail($scope.change.useremail).then(function() {
+      user.updateEmail($scope.change.useremail).then(function () {
         // Update successful.
-      }, function(error) {
+      }, function (error) {
         // An error happened.
       });
     });
@@ -116,56 +91,48 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
       address: $scope.change.useraddress
     });
     $scope.closeModal();
-  }
+  };
 
   $ionicModal.fromTemplateUrl('templates/popup/change.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function(modal) {
-        $scope.modal = modal;
-      });
-      $scope.openModal = function() {
-        $scope.modal.show();
-      };
-      $scope.closeModal = function() {
-        $scope.modal.hide();
-      };
-      // Cleanup the modal when we're done with it!
-      $scope.$on('$destroy', function() {
-        $scope.modal.remove();
-      });
-      // Execute action on hide modal
-      $scope.$on('modal.hidden', function() {
-        // Execute action
-      });
-      // Execute action on remove modal
-      $scope.$on('modal.removed', function() {
-        // Execute action
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function (modal) {
+    $scope.modal = modal;
   });
-  $scope.settings = {
-    enableFriends: true
+  $scope.openModal = function () {
+    $scope.modal.show();
   };
+  $scope.closeModal = function () {
+    $scope.modal.hide();
+  };
+  // Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function () {
+    $scope.modal.remove();
+  });
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function () {
+    // Execute action
+  });
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function () {
+    // Execute action
+  });
 });
 
+appControllers.controller('GroupsCtrl', function ($scope, Groups) {
+  $scope.groups = [];
 
-appControllers.controller('GroupsCtrl', function ($scope, Groups, $firebaseArray) {
- $scope.groups = [];
- // var ref = firebase.database().ref('GroupMember');
- //    var list = $firebaseArray(ref);
-   
- //    list.$loaded().then(function(items) {
- //      this.items = items; // populated array
- //      console.log(items.$keyAt(1));
- //      console.log(items[0].$id)
- //    }.bind(this));
-    
-  var commentsRef = firebase.database().ref('GroupMember');
-  commentsRef.on('child_added', function(snapshot) {
-      $scope.groups.push({
-          maphong: snapshot.key,
-          name: snapshot.val().infomation.name,
-          address: snapshot.val().infomation.address,
-          avatar: snapshot.val().infomation.avatar
-      });
+  var ref = firebase.database().ref("GroupMember");
+  ref.once('value', function (snapshot) {
+    snapshot.forEach(function (childSnapshot) {
+      var childKey = childSnapshot.key;
+      var childData = childSnapshot.val();
+
+      console.log(childKey);
+      console.log(childData.infomation);
+
+      $scope.groups.push(childData.infomation);
+      // ...
+    });
   });
 });

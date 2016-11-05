@@ -40,11 +40,13 @@ appControllers.controller('SignUpCtrl', function ($scope, $ionicPopup, $timeout,
           user.sex = "Boy";
           user.phone = "01658978828";
           user.name = user.email;
+          user.id = user.uid;
 
           firebase.database()
             .ref()
             .child('Users' + "/" + user.uid)
             .set({
+              id: user.uid,
               address: user.address,
               name: user.name,
               phone: user.phone,

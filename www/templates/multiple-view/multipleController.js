@@ -9,7 +9,7 @@ appControllers.controller('MessageListCtrl', function ($scope, $state, MultipleV
   }
 });
 
-appControllers.controller('ViewMessageCtrl', function ($scope, $stateParams, MultipleViewsManager, MessageService, Firebase, $ionicScrollDelegate) {
+appControllers.controller('ViewMessageCtrl', function ($scope, $stateParams, MultipleViewsManager, MessageService, Firebase, $ionicScrollDelegate, ChatsGroups) {
   $scope.message = MessageService.get($stateParams.messageId);
 
   MultipleViewsManager.updated('view-message', function (params) {
