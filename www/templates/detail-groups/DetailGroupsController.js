@@ -17,4 +17,5 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, Groups, Topics) 
   $scope.topics = Topics.all();
 
   console.log("Groups detail");
+  
 });

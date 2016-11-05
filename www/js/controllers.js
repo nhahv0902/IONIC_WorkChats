@@ -150,15 +150,23 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
 
 appControllers.controller('GroupsCtrl', function ($scope, Groups, $firebaseArray) {
  $scope.groups = [];
+ // var ref = firebase.database().ref('GroupMember');
+ //    var list = $firebaseArray(ref);
+   
+ //    list.$loaded().then(function(items) {
+ //      this.items = items; // populated array
+ //      console.log(items.$keyAt(1));
+ //      console.log(items[0].$id)
+ //    }.bind(this));
+    
   var commentsRef = firebase.database().ref('GroupMember');
-  commentsRef.on('child_added', function(snapshot) {  
-
-    // console.log(snapshot.key);  
-      // console.log(snapshot.val());
-      // console.log(snapshot.val().infomation.name)
+  commentsRef.on('child_added', function(snapshot) {
+  console.log(snapshot.val().infomation.address);  
       $scope.groups.push({
           maphong: snapshot.key,
-          name: snapshot.val().infomation.name
+          name: snapshot.val().infomation.name,
+          address: snapshot.val().infomation.address,
+          avatar: snapshot.val().infomation.avatar
       });
   });
 });
