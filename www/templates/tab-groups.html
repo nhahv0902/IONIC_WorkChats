@@ -27,18 +27,18 @@
       <div class="col col-50" ng-repeat="row in group">
         <div class="list card">
           <a nav-direction="forward" class="item item-avatar item-avatar-center item-avatar-l text-center"
-             href="#/tab/groups/{{group.id}}">
-            <img ng-src="{{group.avatar}}">
+             href="#/tab/groups/{{group.infomation.id}}">
+            <img ng-src="{{group.infomation.avatar}}">
 
             <h3>
-              <small>{{group.name}}</small>
+              <small>{{group.infomation.name}}</small>
             </h3>
 
-            <p>{{group.address}}</p>
+            <p>{{group.infomation.address}}</p>
           </a>
 
           <a nav-direction="forward" class="item item-divider text-center" href="#/tab/groups/{{group.id}}">
-            <p>{{group.address}}</p>
+            <p>{{group.infomation.address}}</p>
           </a>
         </div>
       </div>

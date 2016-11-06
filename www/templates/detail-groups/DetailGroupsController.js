@@ -14,6 +14,8 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, Groups, Topics, 
 
   // list memebers
 
+  ChatsGroups.getTopicsOfGroup('1234567','123123');
+
 
 
   $scope.newTopic = function () {
@@ -21,7 +23,6 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, Groups, Topics, 
 
   };
 
-  ChatsGroups.get('1234567', '123');
   // var listGroup = ChatsGroups.
   $scope.groups = {};
   $scope.groups.name = "I love coffe";

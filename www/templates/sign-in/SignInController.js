@@ -1,35 +1,7 @@
 /**
  * Created by Nhahv on 10/31/2016.
  */
-appControllers.controller('SignInCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, $localStorage, $firebaseArray, $firebaseObject) {
-
-  // var ref = firebase.database()
-  //   .ref()
-  //   .child("GroupMember")
-  //   .child('1234567')
-  //   .child('Members');
-  //
-  // var members = $firebaseArray(ref);
-  // var item = members.$keyAt(0);
-  // console.log(item);
-  // console.log(members[0].$value);
-  //
-  // var ref2 = firebase.database()
-  //   .ref()
-  //   .child("GroupMember")
-  //   .child('1234567')
-  //   .child('Topics');
-  //
-  // var topics = $firebaseArray(ref2);
-  //
-  // console.log(topics);
-  //
-  //
-  // $scope.data = $firebaseObject(ref);
-  //
-  //
-  // console.log($scope.messages);
-  // console.log($scope.data);
+appControllers.controller('SignInCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, $localStorage, $firebaseAuth) {
 
   $scope.signIn = {};
 
@@ -47,14 +19,14 @@ appControllers.controller('SignInCtrl', function ($scope, $state, $ionicLoading,
       return;
     }
 
-    $ionicLoading.show();
-    firebase.auth()
-      .signInWithEmailAndPassword(email, password)
+    $ionicLoading.show({
+      template: 'Signing In...'
+    });
+
+    $firebaseAuth().$signInWithEmailAndPassword(email, password)
       .then(function (user) {
-        console.log(user);
 
-        $localStorage.user = {};
-
+        $localStorage.user = user;
         var name = user.displayName;
         var email = user.email;
         var photoUrl = user.photoURL;

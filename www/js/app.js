@@ -192,6 +192,17 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/signIn');
+  // $urlRouterProvider.otherwise('/signIn');
+  $urlRouterProvider.otherwise(function ($injector, $location) {
+    var $state = $injector.get('$state');
+    var $localStorage = $injector.get('$localStorage');
+    var defaultState;
+    if ($localStorage.user != null && $localStorage.user.uid != null) {
+      defaultState = 'tab.recent';
+    } else {
+      defaultState = 'signIn';
+    }
+    $state.go(defaultState);
+  });
   // $urlRouterProvider.otherwise('/masterDetail/messages');
 });

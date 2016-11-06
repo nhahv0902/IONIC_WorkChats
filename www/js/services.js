@@ -1,4 +1,49 @@
 angular.module('starter.services', ['firebase'])
+  .factory('Data', function ($localStorage, $rootScope, $q, $firebaseArray) {
+
+    $rootScope.data = $localStorage;
+
+    return {
+      init: function () {
+        if ($localStorage.members === null) {
+          $localStorage.members = [];
+        }
+
+        if ($localStorage.topics === null) {
+          $localStorage.topics = [];
+        }
+
+        if ($localStorage.groups === null) {
+          $localStorage.groups = [];
+        }
+        if ($localStorage.message === null) {
+          $localStorage.message = [];
+        }
+      },
+
+      getMembers: function () {
+
+        var ref = firebase.database().ref().child("Users");
+        $localStorage.members = $firebaseArray(ref);
+      },
+      getTopics: function () {
+        var ref = firebase.database().ref().child("Topics");
+        $localStorage.topics = $firebaseArray(ref);
+      },
+      getGroups: function () {
+
+        var ref = firebase.database().ref().child("GroupMember");
+        $localStorage.groups = $firebaseArray(ref);
+      },
+      getMessages: function (uId) {
+
+        var ref = firebase.database().ref().child("Messages").child(uId);
+        $localStorage.message = $firebaseArray(ref);
+      }
+    }
+  })
+
+
   .factory('Chats', function () {
     var chats = [{
       id: "123456789",
@@ -53,40 +98,6 @@ angular.module('starter.services', ['firebase'])
         return null;
       }
     };
-  })
-
-  .factory('Groups', function ($firebaseArray, $localStorage, $q) {
-
-    return {
-      init: function () {
-        if ($localStorage.groups == null) {
-          $localStorage.groups = [];
-        }
-      },
-
-      get: function () {
-        var groups = [];
-
-        var ref = firebase.database().ref("GroupMember");
-        ref.once('value', function (snapshot) {
-          snapshot.forEach(function (childSnapshot) {
-            var childKey = childSnapshot.key;
-            var childData = childSnapshot.val();
-
-            console.log(childKey);
-            console.log(childData);
-
-            groups.push(childData.infomation);
-          });
-        });
-
-        return $q.when(groups).then(function (data) {
-          $localStorage.groups = data;
-        });
-
-
-      }
-    }
   })
 
   .factory('Topics', function () {
@@ -229,7 +240,6 @@ angular.module('starter.services', ['firebase'])
 
 
   .factory('ChatsSingle', function ($ionicScrollDelegate, $firebaseArray) {
-
     var chats = [];
     var chats2 = [];
 
@@ -274,15 +284,16 @@ angular.module('starter.services', ['firebase'])
   })
 
 
-  .factory('ChatsGroups', function ($ionicScrollDelegate, $firebaseArray) {
-
+  .factory('ChatsGroups', function ($ionicScrollDelegate, $firebaseArray, $q, $localStorage) {
 
     var topics = [];
+
     var membersTopic = [];
     var membersGroup = [];
     var chats = [];
 
     return {
+
       allChats: function () {
         return chats;
       },
@@ -295,7 +306,7 @@ angular.module('starter.services', ['firebase'])
       getAllTopics: function () {
         return topics;
       },
-      get: function (groupId, topicId) {
+      getMemberOfGroups: function (groupId) {
 
         // get topics of grops
         var ref = firebase.database().ref("GroupMember").child(groupId);
@@ -322,6 +333,30 @@ angular.module('starter.services', ['firebase'])
         });
       },
 
+      getTopicsOfGroup: function (groupId) {
+
+        var tempTopic = [];
+
+        // get topics of grops
+        var ref = firebase.database().ref("GroupMember").child(groupId);
+        var refTopic = firebase.database().ref("Topics");
+
+        ref.child("Topics").once('value', function (snapshot) {
+          snapshot.forEach(function (childData) {
+            console.log("topics");
+            console.log(childData.val());
+
+            refTopic.child(childData.val()).once('value', function (data) {
+              console.log(data.val());
+              tempTopic.push(data.val());
+            });
+          })
+        });
+
+        $q.when(tempTopic).then(function (data) {
+          topics = data;
+        })
+      },
 
       send: function (objectMessage) {
         chats.$add(objectMessage).then(function (data) {

@@ -1,9 +1,10 @@
 var appControllers = angular.module('starter.controllers', ['firebase']); // Use for all controller of application.
 
-appControllers.controller('MainCtrl', function ($scope, $localStorage, Groups) {
-  Groups.init();
-  Groups.get();
-
+appControllers.controller('MainCtrl', function ($scope, $localStorage, Data) {
+  Data.init();
+  Data.getMembers();
+  Data.getTopics();
+  Data.getGroups();
 });
 appControllers.controller('MembersCtrl', function ($scope, Chats) {
   $scope.chats = Chats.all();
@@ -124,12 +125,17 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
   });
 });
 
-appControllers.controller('GroupsCtrl', function ($scope, Groups, $localStorage) {
+appControllers.controller('GroupsCtrl', function ($scope, $localStorage) {
   $scope.groups = $localStorage.groups;
-  Groups.get();
 
-  console.log($scope.groups);
-  for (var i = 0; i < $scope.groups.length; i++) {
-    console.log($scope.groups[i]);
+  for (var i = 0; i < $localStorage.groups.length; i++) {
+    console.log($localStorage.groups[i]);
+  }
+
+  var topics = $localStorage.topics;
+  console.log("Topic 2");
+  //noinspection JSDuplicatedDeclaration
+  for (var i = 0; i < topics.length; i++) {
+    console.log(topics[i]);
   }
 });
