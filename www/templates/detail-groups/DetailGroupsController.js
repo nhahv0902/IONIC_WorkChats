@@ -1,11 +1,20 @@
 /**
  * Created by Nhahv on 10/31/2016.
  */
-appControllers.controller('DetailGroupsCtrl', function ($scope, Groups, Topics, $ionicModal, ChatsGroups) {
+appControllers.controller('DetailGroupsCtrl', function ($scope, Groups, Topics, $ionicModal, ChatsGroups, $stateParams) {
 
   $scope.backToGroups = function () {
     window.history.back();
   };
+
+  // list topics
+
+  var groupId = $stateParams.groupId;
+  console.log(groupId);
+
+  // list memebers
+
+
 
   $scope.newTopic = function () {
 

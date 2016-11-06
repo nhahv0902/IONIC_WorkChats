@@ -35,7 +35,6 @@ appControllers.controller('SignUpCtrl', function ($scope, $ionicPopup, $timeout,
       .then(function (user) {
         if (user) {
 
-          console.log(user);
           user.address = "Ha Noi";
           user.sex = "Boy";
           user.phone = "01658978828";

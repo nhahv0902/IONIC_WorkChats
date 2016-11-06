@@ -6,7 +6,9 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 
-var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngStorage', 'ngCordova', 'ngMaterial', 'ionicMultipleViews', 'firebase']);
+var app = angular.module('starter', ['ionic', 'starter.controllers',
+  'starter.services', 'ngStorage', 'ngCordova', 'ngMaterial',
+  'ionicMultipleViews', "firebase"]);
 
 app.run(function ($ionicPlatform) {
   $ionicPlatform.ready(function () {
