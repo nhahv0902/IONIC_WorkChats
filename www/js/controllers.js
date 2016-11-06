@@ -5,6 +5,7 @@ appControllers.controller('MainCtrl', function ($scope, $localStorage, Data) {
   Data.getMembers();
   Data.getTopics();
   Data.getGroups();
+  Data.getMemberRecent();
 });
 appControllers.controller('MembersCtrl', function ($scope, Chats) {
   $scope.chats = Chats.all();

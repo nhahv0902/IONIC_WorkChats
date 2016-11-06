@@ -11,19 +11,20 @@ appControllers.controller('ChatDetailCtrl',
 
     $scope.chat = {};
     $scope.chat.name = "hoang Van Nha";
-    $scope.idSend = "123456789";
+    $scope.idSend = $localStorage.user.uid;
     var idReceiver = $stateParams.chatId;
     if (idReceiver === "123456789") {
-      $scope.idSend = "987654321";
+      idReceiver = "qFivPT4dnhcdJfGZwpsgIYVlIE73";
+    } else {
+      idReceiver = "nFtxMfo3pXbsF73SsnVqedkNlso2";
+      $scope.idSend = "qFivPT4dnhcdJfGZwpsgIYVlIE73";
     }
-    var keyMessage = "Messages";
 
     var date = new Date();
 
     $ionicScrollDelegate.scrollBottom(true);
     ChatsSingle.get($scope.idSend, idReceiver);
     $scope.chatList = ChatsSingle.all();
-    ChatsSingle.getIndex(1);
 
     console.log($scope.chatList);
     $scope.sendChat = function (chatText) {

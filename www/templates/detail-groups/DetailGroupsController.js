@@ -1,7 +1,8 @@
 /**
  * Created by Nhahv on 10/31/2016.
  */
-appControllers.controller('DetailGroupsCtrl', function ($scope, Topics, $ionicModal, ChatsGroups, $stateParams) {
+appControllers.controller('DetailGroupsCtrl', function ($scope, Topics, $ionicModal,
+                                                        ChatsGroups, $stateParams, Data) {
 
   $scope.backToGroups = function () {
     window.history.back();
@@ -21,8 +22,9 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, Topics, $ionicMo
   ChatsGroups.getMemberOfGroups(groupId);
   $scope.members = ChatsGroups.allMemberGroup();
 
+  ChatsGroups.getMemberOfTopic();
 
-  console.log("Groups detail");
+  Data.getMemberRecent();
 
 
   $scope.newTopic = function () {

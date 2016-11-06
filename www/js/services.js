@@ -19,6 +19,9 @@ angular.module('starter.services', ['firebase'])
         if ($localStorage.message === null) {
           $localStorage.message = [];
         }
+        if ($localStorage.memberRecent === null) {
+          $localStorage.memberRecent = [];
+        }
       },
 
       getMembers: function () {
@@ -39,6 +42,28 @@ angular.module('starter.services', ['firebase'])
 
         var ref = firebase.database().ref().child("Messages").child(uId);
         $localStorage.message = $firebaseArray(ref);
+      },
+      getMemberRecent: function () {
+        console.log("getMemberRecent");
+
+        var uId = $localStorage.user.uid;
+        console.log(uId);
+        var ref = firebase.database().ref().child("Messages").child(uId);
+        $firebaseArray(ref).$loaded().then(function (snapshot) {
+          $localStorage.memberRecent = snapshot;
+          $q.when($localStorage.members).then(function (dataMembers) {
+            for (var i = 0; i <  $localStorage.memberRecent.length; i++) {
+              for (var index = 0; index < dataMembers.length; index++) {
+                if ( $localStorage.memberRecent[i].$id === dataMembers[index].$id) {
+                  $localStorage.memberRecent[i].information = dataMembers[index];
+                  console.log( $localStorage.memberRecent);
+                  break
+                }
+              }
+            }
+          });
+        });
+
       }
     }
   })
@@ -279,7 +304,8 @@ angular.module('starter.services', ['firebase'])
   })
 
 
-  .factory('ChatsGroups', function ($ionicScrollDelegate, $firebaseArray, $q, $localStorage, Data) {
+  .factory('ChatsGroups', function ($ionicScrollDelegate, $firebaseArray,
+                                    $q, $localStorage, Data, $firebaseObject) {
       Data.init();
       Data.getMembers();
       var topics = [];
@@ -313,7 +339,7 @@ angular.module('starter.services', ['firebase'])
                   for (var index = 0; index < $localStorage.members.length; index++) {
                     if (data[i].$id === dataMembers[index].$id) {
                       membersGroup[i] = dataMembers[index];
-                      console.log(dataMembers[index]);
+                      // console.log(dataMembers[index]);
                       break
                     }
                   }
@@ -342,8 +368,31 @@ angular.module('starter.services', ['firebase'])
               });
             }
           );
-        }
-        ,
+        },
+
+        getMemberOfTopic: function () {
+          var ref = firebase.database().ref("Topics").child('123123');
+          $firebaseObject(ref).$loaded().then(function (data) {
+
+              console.log("getMemberOfTopic");
+              var member = data.member;
+
+              $q.when($localStorage.members).then(function (dataMembers) {
+
+                for (var i = 0; i < member.length; i++) {
+                  for (var index = 0; index < dataMembers.length; index++) {
+                    if (member[i] === dataMembers[index].$id) {
+                      member[i] = dataMembers[index];
+                      // console.log(data.member[i]);
+                      break
+                    }
+                  }
+                }
+                // console.log(data);
+              });
+            }
+          );
+        },
 
         send: function (objectMessage) {
           chats.$add(objectMessage).then(function (data) {
