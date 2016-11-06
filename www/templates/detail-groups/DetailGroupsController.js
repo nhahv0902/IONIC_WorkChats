@@ -1,35 +1,33 @@
 /**
  * Created by Nhahv on 10/31/2016.
  */
-appControllers.controller('DetailGroupsCtrl', function ($scope, Groups, Topics, $ionicModal, ChatsGroups, $stateParams) {
+appControllers.controller('DetailGroupsCtrl', function ($scope, Topics, $ionicModal, ChatsGroups, $stateParams) {
 
   $scope.backToGroups = function () {
     window.history.back();
   };
 
-  // list topics
-
   var groupId = $stateParams.groupId;
-  console.log(groupId);
 
   // list memebers
-
-  ChatsGroups.getTopicsOfGroup('1234567','123123');
-
-
-
-  $scope.newTopic = function () {
-
-
-  };
 
   // var listGroup = ChatsGroups.
   $scope.groups = {};
   $scope.groups.name = "I love coffe";
 
-  $scope.topics = Topics.all();
+  ChatsGroups.getTopicsOfGroup(groupId);
+  $scope.topics = ChatsGroups.getAllTopics();
+
+  ChatsGroups.getMemberOfGroups(groupId);
+  $scope.members = ChatsGroups.allMemberGroup();
+
 
   console.log("Groups detail");
+
+
+  $scope.newTopic = function () {
+  };
+
   $ionicModal.fromTemplateUrl('templates/popup/addtopic.html', {
     scope: $scope,
     animation: 'slide-in-up'

@@ -253,7 +253,11 @@ angular.module('starter.services', ['firebase'])
           .ref("Messages/" + idSend + "/" + idReceiver);
 
         chats = $firebaseArray(ref);
-        $ionicScrollDelegate.scrollBottom(true);
+        chats.$loaded().then(function (data) {
+          console.log("chat");
+          chats = data;
+          $ionicScrollDelegate.scrollBottom(true);
+        });
 
         var ref2 = firebase.database()
           .ref()
@@ -270,101 +274,86 @@ angular.module('starter.services', ['firebase'])
             $ionicScrollDelegate.scrollBottom(true);
           }
         })
-      },
-      getIndex: function (position) {
-
-        var ref = firebase.database()
-          .ref();
-
-        var list = [];
-        list = $firebaseArray(ref);
-        console.log(list);
       }
     }
   })
 
 
-  .factory('ChatsGroups', function ($ionicScrollDelegate, $firebaseArray, $q, $localStorage) {
+  .factory('ChatsGroups', function ($ionicScrollDelegate, $firebaseArray, $q, $localStorage, Data) {
+      Data.init();
+      Data.getMembers();
+      var topics = [];
 
-    var topics = [];
+      var membersTopic = [];
+      var membersGroup = [];
+      var chats = [];
 
-    var membersTopic = [];
-    var membersGroup = [];
-    var chats = [];
+      return {
+        allChats: function () {
+          return chats;
+        },
+        allMemberTopic: function () {
+          return membersTopic;
+        },
+        allMemberGroup: function () {
+          return membersGroup;
+        },
+        getAllTopics: function () {
+          return topics;
+        },
+        getMemberOfGroups: function (groupId) {
 
-    return {
+          // get topics of grops
+          var ref = firebase.database().ref("GroupMember").child(groupId).child('Members');
+          $firebaseArray(ref).$loaded().then(function (data) {
 
-      allChats: function () {
-        return chats;
-      },
-      allMemberTopic: function () {
-        return membersTopic;
-      },
-      allMemberGroup: function () {
-        return membersGroup;
-      },
-      getAllTopics: function () {
-        return topics;
-      },
-      getMemberOfGroups: function (groupId) {
+              $q.when($localStorage.members).then(function (dataMembers) {
 
-        // get topics of grops
-        var ref = firebase.database().ref("GroupMember").child(groupId);
+                for (var i = 0; i < data.length; i++) {
+                  for (var index = 0; index < $localStorage.members.length; index++) {
+                    if (data[i].$id === dataMembers[index].$id) {
+                      membersGroup[i] = dataMembers[index];
+                      console.log(dataMembers[index]);
+                      break
+                    }
+                  }
+                }
+              });
+            }
+          );
 
-        ref.child("Topics").on('value', function (snapshot) {
-          for (var i = 0; i < data.length; i++) {
-            console.log(snapshot[i].val());
-            firebase.database().ref("Topics").child(snapshot[i].val()).on('value', function (data) {
-              topics[i] = data.val();
-              console.log(topics[i]);
-            });
-          }
-        });
+        },
 
+        getTopicsOfGroup: function (groupId) {
+          var ref = firebase.database().ref("GroupMember").child(groupId).child('Topics');
+          $firebaseArray(ref).$loaded().then(function (data) {
 
-        ref.child("Members").on('value', function (snapshot) {
-          for (var i = 0; i < data.length; i++) {
-            console.log(snapshot[i].val());
-            firebase.database().ref("Users").child(snapshot[i].val()).on('value', function (data) {
-              membersGroup[i] = data[i].val();
-              console.log(membersGroup[i]);
-            });
-          }
-        });
-      },
+              $q.when($localStorage.topics).then(function (dataMembers) {
 
-      getTopicsOfGroup: function (groupId) {
+                for (var i = 0; i < data.length; i++) {
+                  for (var index = 0; index < dataMembers.length; index++) {
+                    if (data[i].$id === dataMembers[index].$id) {
+                      topics[i] = dataMembers[index];
+                      console.log(dataMembers[index]);
+                      break
+                    }
+                  }
+                }
+              });
+            }
+          );
+        }
+        ,
 
-        var tempTopic = [];
-
-        // get topics of grops
-        var ref = firebase.database().ref("GroupMember").child(groupId);
-        var refTopic = firebase.database().ref("Topics");
-
-        ref.child("Topics").once('value', function (snapshot) {
-          snapshot.forEach(function (childData) {
-            console.log("topics");
-            console.log(childData.val());
-
-            refTopic.child(childData.val()).once('value', function (data) {
-              console.log(data.val());
-              tempTopic.push(data.val());
-            });
+        send: function (objectMessage) {
+          chats.$add(objectMessage).then(function (data) {
+            if (data) {
+              chats2.$add(objectMessage);
+              $ionicScrollDelegate.scrollBottom(true);
+            }
           })
-        });
-
-        $q.when(tempTopic).then(function (data) {
-          topics = data;
-        })
-      },
-
-      send: function (objectMessage) {
-        chats.$add(objectMessage).then(function (data) {
-          if (data) {
-            chats2.$add(objectMessage);
-            $ionicScrollDelegate.scrollBottom(true);
-          }
-        })
+        }
       }
     }
-  });
+  )
+;

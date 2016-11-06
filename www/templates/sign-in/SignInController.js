@@ -1,7 +1,7 @@
 /**
  * Created by Nhahv on 10/31/2016.
  */
-appControllers.controller('SignInCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, $localStorage, $firebaseAuth) {
+appControllers.controller('SignInCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, $localStorage, $firebaseAuth, Data) {
 
   $scope.signIn = {};
 
@@ -27,19 +27,8 @@ appControllers.controller('SignInCtrl', function ($scope, $state, $ionicLoading,
       .then(function (user) {
 
         $localStorage.user = user;
-        var name = user.displayName;
-        var email = user.email;
-        var photoUrl = user.photoURL;
-        var uid = user.uid;
-
-        $localStorage.user = user;
-        // $localStorage.user.email = email;
-        // $localStorage.user.uid = uid;
-
-
+        Data.getMessages($localStorage.user.uid);
         console.log($localStorage.user.uid);
-        console.log($localStorage.user.email);
-
         $ionicLoading.hide();
         $state.go('tab.recent');
 

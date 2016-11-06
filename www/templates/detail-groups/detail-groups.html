@@ -19,10 +19,10 @@
     <h1>List topics</h1>
     <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="topic in topics"
-                type="item-text-wrap" href="#/masterDetail/messages/{{topic.id}}">
-        <img ng-src="{{topic.thumbnail}}">
-        <h2>{{topic.name}}</h2>
-        <p>{{topic.members}}</p>
+                type="item-text-wrap" href="#/masterDetail/messages/{{topic.$id}}">
+        <img ng-src="{{topic.avatar}}">
+        <h2>{{topic.title}}</h2>
+        <p>{{topic.type}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
       </ion-item>
@@ -30,9 +30,18 @@
 
 
     <h1>List member</h1>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="member in members"
+                type="item-text-wrap" href="#/masterDetail/messages/{{topic.$id}}" style=" display: block;
+    margin: 0 auto;">
+        <img ng-src="{{member.avatar}}" style=" text-align: center;">
+        <h2>{{member.name}}</h2>
+        <p>{{member.address}}</p>
+        <p>{{member.sex}}</p>
+        <p>{{member.phone}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
 
-    <div class="">
-
-    </div>
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>

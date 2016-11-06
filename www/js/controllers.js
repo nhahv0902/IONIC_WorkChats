@@ -13,55 +13,7 @@ appControllers.controller('MembersCtrl', function ($scope, Chats) {
   };
 });
 
-appControllers.controller('ChatDetailCtrl',
-  function ($rootScope, $localStorage, $scope, $stateParams,
-            ChatsSingle, Chats, $ionicScrollDelegate, $firebaseArray) {
 
-    $scope.historyBack = function () {
-      window.history.back();
-    };
-
-    $scope.chat = {};
-    $scope.chat.name = "hoang Van Nha";
-    $scope.idSend = "123456789";
-    var idReceiver = $stateParams.chatId;
-    if (idReceiver === "123456789") {
-      $scope.idSend = "987654321";
-    }
-
-
-    $scope.chatList = [];
-    var keyMessage = "Messages";
-
-    var date = new Date();
-
-    var url = keyMessage + '/' + $scope.idSend + '/' + idReceiver;
-    var urlReceiver = keyMessage + '/' + idReceiver + '/' + $scope.idSend;
-
-    $ionicScrollDelegate.scrollBottom(true);
-
-
-    ChatsSingle.get($scope.idSend, idReceiver);
-    $scope.chatList = ChatsSingle.all();
-
-    ChatsSingle.getIndex(1);
-
-
-    console.log($scope.chatList);
-    $scope.sendChat = function (chatText) {
-
-      var time = date.getTime();
-      var objectMessage = {
-
-        time: time,
-        idSend: $scope.idSend,
-        idReceiver: idReceiver,
-        text: chatText
-      };
-
-      ChatsSingle.send(objectMessage);
-    };
-  });
 
 appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
   $scope.change = {};
@@ -125,17 +77,3 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
   });
 });
 
-appControllers.controller('GroupsCtrl', function ($scope, $localStorage) {
-  $scope.groups = $localStorage.groups;
-
-  for (var i = 0; i < $localStorage.groups.length; i++) {
-    console.log($localStorage.groups[i]);
-  }
-
-  var topics = $localStorage.topics;
-  console.log("Topic 2");
-  //noinspection JSDuplicatedDeclaration
-  for (var i = 0; i < topics.length; i++) {
-    console.log(topics[i]);
-  }
-});

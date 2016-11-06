@@ -68,7 +68,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
       url: '/groups',
       views: {
         'tab-groups': {
-          templateUrl: 'templates/tab-groups.html',
+          templateUrl: 'templates/tab-groups/tab-groups.html',
           controller: 'GroupsCtrl'
         }
       }
@@ -89,7 +89,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
       url: '/chats/:chatId',
       views: {
         'tab-recent': {
-          templateUrl: 'templates/chat-detail.html',
+          templateUrl: 'templates/chats/chat-detail.html',
           controller: 'ChatDetailCtrl'
         }
       }
@@ -99,7 +99,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
       url: '/chatMember/:chatId',
       views: {
         'tab-members': {
-          templateUrl: 'templates/chat-detail.html',
+          templateUrl: 'templates/chats/chat-detail.html',
           controller: 'ChatDetailCtrl'
         }
       }
