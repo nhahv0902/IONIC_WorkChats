@@ -33,15 +33,26 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
       console.log('not log in');
     }
   });
-
+  $scope.resetpass = function(){
+    $scope.change.userpassword ='';
+  }
   $scope.saveChange = function () {
     firebase.auth().onAuthStateChanged(function (user) {
-      //alert($scope.change.useremail);
+      //chage email
       user.updateEmail($scope.change.useremail).then(function () {
         // Update successful.
       }, function (error) {
         // An error happened.
       });
+      //change password
+      if($scope.change.userpassword){
+        user.updatePassword($scope.change.userpassword).then(function() {
+          // Update successful.
+        }, function(error) {
+          // An error happened.
+        })
+      }
+
     });
     firebase.database().ref('Users/' + $scope.change.userId).set({
       name: $scope.change.username,
