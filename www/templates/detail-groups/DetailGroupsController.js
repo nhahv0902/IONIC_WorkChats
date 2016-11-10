@@ -29,10 +29,21 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, Topics, $ionicMo
   $scope.topic ={};
   $scope.addTopic = function () {
     var newPostKey = firebase.database().ref('Topics').push().key;
-    console.log(groupId);
-    // firebase.database().ref('Topics/' + newPostKey).set({
-     
-    // });
+    firebase.auth().onAuthStateChanged(function (user) {
+      firebase.database().ref('Topics/' + newPostKey).set({
+          id: newPostKey,
+          title: $scope.topic.title,
+          describe: $scope.topic.describe,
+          group: groupId,
+          admin: user.uid,
+          type: $scope.topic.type,
+          numbermember: 1
+      });
+    });
+    firebase.database().ref('Topics/' + '-KVr05M7xDaGMMlHKi-j/'+'mem').set({
+      members:{a:"g"}
+    });
+    $scope.closeModal();
   };
 
   $ionicModal.fromTemplateUrl('templates/popup/addtopic.html', {
