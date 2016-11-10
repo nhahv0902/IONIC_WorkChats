@@ -26,8 +26,13 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, Topics, $ionicMo
 
   Data.getMemberRecent();
 
-
-  $scope.newTopic = function () {
+  $scope.topic ={};
+  $scope.addTopic = function () {
+    var newPostKey = firebase.database().ref('Topics').push().key;
+    console.log(groupId);
+    // firebase.database().ref('Topics/' + newPostKey).set({
+     
+    // });
   };
 
   $ionicModal.fromTemplateUrl('templates/popup/addtopic.html', {
