@@ -36,9 +36,9 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, $ionicModal, Cha
         type: $scope.topic.type,
         numbermember: 1
       });
-      save.child('members').push({
-          idofmember: user.uid
-      });
+      save.child('members').child(user.uid).set(user.uid);
+      var addtopic = firebase.database().ref("GroupMember").child(groupId).child('Topics').child(newPostKey).set(newPostKey);
+     
     });
     // firebase.database().ref('Topics/'+newPostKey+'/'+'members').push({
     //   idp: newPostKey
