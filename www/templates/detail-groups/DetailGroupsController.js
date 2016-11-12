@@ -26,7 +26,8 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, $ionicModal, Cha
   $scope.addTopic = function () {
     var newPostKey = firebase.database().ref('Topics').push().key;
     firebase.auth().onAuthStateChanged(function (user) {
-      firebase.database().ref('Topics/' + newPostKey).set({
+      var save = firebase.database().ref('Topics/' + newPostKey);
+      save.set({
         id: newPostKey,
         title: $scope.topic.title,
         describe: $scope.topic.describe,
@@ -35,10 +36,13 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, $ionicModal, Cha
         type: $scope.topic.type,
         numbermember: 1
       });
+      save.child('members').push({
+          idofmember: user.uid
+      });
     });
-    firebase.database().ref('Topics/' + '-KVr05M7xDaGMMlHKi-j/' + 'mem').set({
-      members: {a: "g"}
-    });
+    // firebase.database().ref('Topics/'+newPostKey+'/'+'members').push({
+    //   idp: newPostKey
+    // });
     $scope.closeModal();
   };
 
