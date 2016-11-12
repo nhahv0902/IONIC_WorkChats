@@ -36,13 +36,15 @@ appControllers.controller('ViewMessageCtrl',
     console.log($scope.idSend);
 
     $ionicScrollDelegate.scrollBottom(true);
+    var information = $localStorage.account;
 
     $scope.sendChat = function (chatText) {
       var time = (new Date()).getTime();
       var objectMessage = {
         time: time,
         idSend: $scope.idSend,
-        text: chatText
+        text: chatText,
+        avatar: information.avatar
       };
       ChatsGroups.send(objectMessage, id);
     };

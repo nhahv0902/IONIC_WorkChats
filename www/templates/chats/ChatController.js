@@ -2,8 +2,7 @@
  * Created by Nhahv on 11/6/2016.
  */
 appControllers.controller('ChatDetailCtrl',
-  function ($rootScope, $localStorage, $scope, $stateParams,
-            ChatsSingle, Chats, $ionicScrollDelegate, $firebaseArray) {
+  function ($rootScope, $localStorage, $scope, $stateParams, ChatsSingle, $ionicScrollDelegate) {
 
     $scope.historyBack = function () {
       window.history.back();
@@ -20,6 +19,8 @@ appControllers.controller('ChatDetailCtrl',
       $scope.idSend = "qFivPT4dnhcdJfGZwpsgIYVlIE73";
     }
 
+    var information = $localStorage.account;
+
 
     $ionicScrollDelegate.scrollBottom(true);
     ChatsSingle.get($scope.idSend, idReceiver);
@@ -33,7 +34,8 @@ appControllers.controller('ChatDetailCtrl',
         time: time,
         idSend: $scope.idSend,
         idReceiver: idReceiver,
-        text: chatText
+        text: chatText,
+        avatar: information.avatar
       };
 
       ChatsSingle.send(objectMessage);

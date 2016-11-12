@@ -1,8 +1,7 @@
 /**
  * Created by Nhahv on 10/31/2016.
  */
-appControllers.controller('DetailGroupsCtrl', function ($scope, Topics, $ionicModal,
-                                                        ChatsGroups, $stateParams, Data) {
+appControllers.controller('DetailGroupsCtrl', function ($scope, $ionicModal, ChatsGroups, $stateParams) {
 
   $scope.backToGroups = function () {
     window.history.back();
@@ -10,7 +9,6 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, Topics, $ionicMo
 
   var groupId = $stateParams.groupId;
 
-  // list memebers
 
   // var listGroup = ChatsGroups.
   $scope.groups = {};
@@ -24,22 +22,22 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, Topics, $ionicMo
 
   ChatsGroups.getMemberOfTopic();
 
-  $scope.topic ={};
+  $scope.topic = {};
   $scope.addTopic = function () {
     var newPostKey = firebase.database().ref('Topics').push().key;
     firebase.auth().onAuthStateChanged(function (user) {
       firebase.database().ref('Topics/' + newPostKey).set({
-          id: newPostKey,
-          title: $scope.topic.title,
-          describe: $scope.topic.describe,
-          group: groupId,
-          admin: user.uid,
-          type: $scope.topic.type,
-          numbermember: 1
+        id: newPostKey,
+        title: $scope.topic.title,
+        describe: $scope.topic.describe,
+        group: groupId,
+        admin: user.uid,
+        type: $scope.topic.type,
+        numbermember: 1
       });
     });
-    firebase.database().ref('Topics/' + '-KVr05M7xDaGMMlHKi-j/'+'mem').set({
-      members:{a:"g"}
+    firebase.database().ref('Topics/' + '-KVr05M7xDaGMMlHKi-j/' + 'mem').set({
+      members: {a: "g"}
     });
     $scope.closeModal();
   };

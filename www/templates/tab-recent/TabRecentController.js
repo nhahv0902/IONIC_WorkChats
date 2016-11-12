@@ -1,10 +1,7 @@
 /**
  * Created by Nhahv on 10/31/2016.
  */
-appControllers.controller('RecentCtrl', function ($scope, $stateParams, Chats, MultipleViewsManager, $localStorage) {
+appControllers.controller('RecentCtrl', function ($scope, $localStorage) {
 
   $scope.members = $localStorage.memberRecent;
-  $scope.remove = function (chat) {
-    Chats.remove(chat);
-  };
 });

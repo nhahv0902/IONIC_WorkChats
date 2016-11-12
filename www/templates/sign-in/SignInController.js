@@ -30,6 +30,8 @@ appControllers.controller('SignInCtrl', function ($scope, $state, $ionicLoading,
         $localStorage.user = user;
         Data.getMessages(user.uid);
         Data.getMemberRecent(user.uid);
+        Data.getInformation(user.uid);
+
         console.log($localStorage.user.uid);
         $ionicLoading.hide();
         $state.go('tab.recent');

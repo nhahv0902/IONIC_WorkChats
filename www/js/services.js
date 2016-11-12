@@ -1,5 +1,6 @@
 angular.module('starter.services', ['firebase'])
-  .factory('Data', function ($localStorage, $rootScope, $q, $firebaseArray) {
+
+  .factory('Data', function ($localStorage, $rootScope, $q, $firebaseArray, $firebaseObject) {
 
     $rootScope.data = $localStorage;
 
@@ -31,6 +32,10 @@ angular.module('starter.services', ['firebase'])
         }
         if ($localStorage.messageTopic == null) {
           $localStorage.messageTopic = [];
+        }
+
+        if ($localStorage.account == null) {
+          $localStorage.account = {};
         }
       },
 
@@ -81,122 +86,38 @@ angular.module('starter.services', ['firebase'])
         });
       },
 
-      getMemberOfGroup: function () {
-      }
-    }
-  })
+      getMemberOfGroup: function (groupId) {
+        var ref = firebase.database().ref('GroupMember').child(groupId).child('Members');
 
-
-  .factory('Chats', function () {
-    var chats = [{
-      id: "123456789",
-      friendType: "Messenger",
-      name: "felix",
-      face: 'img/user01.jpg',
-      email: 'hi@weburner.com',
-      activeTime: "Active today"
-    }, {
-      id: "987654321",
-      friendType: "facebook",
-      name: "Eric",
-      face: 'img/user02.jpg',
-      email: 'hi@weburner.com',
-      activeTime: "Active 1h ago"
-    }, {
-      id: "3",
-      name: "Apple",
-      friendType: "Messenger",
-      face: 'img/user03.jpg',
-      email: 'hi@weburner.com',
-      activeTime: "Active today"
-    }, {
-      id: "213",
-      name: "Diamond",
-      friendType: "Messenger",
-      face: 'img/user04.jpg',
-      email: 'hi@weburner.com',
-      activeTime: "Active 3m ago"
-    }, {
-      id: "5",
-      name: "Mike",
-      friendType: "facebook",
-      face: 'img/user05.jpg',
-      email: 'hi@weburner.com',
-      activeTime: "Active today"
-    }];
-
-    return {
-      all: function () {
-        return chats;
-      },
-      remove: function (chat) {
-        chats.splice(chats.indexOf(chat), 1);
-      },
-      get: function (chatId) {
-        for (var i = 0; i < chats.length; i++) {
-          if (chats[i].id === parseInt(chatId)) {
-            return chats[i];
+        $firebaseArray(ref).$loaded().then(function (data) {
+          if (data.length <= 0) {
+            return;
           }
-        }
-        return null;
-      }
-    };
-  })
 
-  .factory('Topics', function () {
-    var rooms = [{
-      id: "topic_1",
-      roomType: "group",
-      thumbnail: "img/thumbnail01.jpg",
-      name: "I Love Coffee",
-      members: "Felix, Eric, Diamond",
-      activeTime: "Active today",
-      userList: ["213", "1", "2"]
-    }, {
-      id: "topic_2",
-      roomType: "group",
-      thumbnail: "img/thumbnail02.jpg",
-      name: "Go shopping",
-      members: "Eric, Apple, Diamond",
-      activeTime: "Active today",
-      userList: ["2", "3", "213"]
-    }, {
-      id: "topic_3",
-      roomType: "ms_friend",
-      thumbnail: "img/user01.jpg",
-      name: "felix",
-      members: "Felix, Diamond",
-      activeTime: "Active 1h ago",
-      userList: ["213", "1"]
-    }, {
-      id: "topic_4",
-      roomType: "fb_friend",
-      thumbnail: "img/user02.jpg",
-      name: "Eric",
-      members: "Eric, Diamond",
-      activeTime: "Active 1h ago",
-      userList: ["213", "2"]
-    }, {
-      id: "topic_5",
-      roomType: "group",
-      thumbnail: "img/thumbnail03.jpg",
-      title: "Ionic",
-      members: "Eric, Apple, Mike, Diamond",
-      activeTime: "11:00 am",
-      userList: ["2", "3", "5", "213"]
-    }, {
-      id: "topic_6",
-      roomType: "group",
-      thumbnail: "img/thumbnail04.jpg",
-      title: "Rockers",
-      members: "felix, Eric, Diamond, Mike",
-      activeTime: "12:15 am",
-      userList: ["1", "2", "213", "5"]
-    }];
-    return {
-      all: function () {
-        return rooms;
+          $q.when($localStorage.members).then(function () {
+            var members = [];
+            for (var i = 0; i < data.length; i++) {
+              for (var index = 0; index < $localStorage.members.length; index++) {
+                if (data[i].$id == $localStorage.members[index].$id) {
+                  members[i] = $localStorage.members[index];
+                  break;
+                }
+              }
+            }
+            $localStorage.memberOfGroup = members;
+            console.log($localStorage.memberOfGroup);
+          });
+
+
+        })
+      },
+
+      getInformation: function (uId) {
+        $localStorage.account = $firebaseObject(firebase.database().ref('Users').child(uId));
+        console.log('getInformation');
+        console.log($localStorage.account);
       }
+
     }
   })
 
@@ -240,8 +161,7 @@ angular.module('starter.services', ['firebase'])
   })
 
 
-  .factory('ChatsGroups', function ($ionicScrollDelegate, $firebaseArray,
-                                    $q, $localStorage, Data, $firebaseObject) {
+  .factory('ChatsGroups', function ($ionicScrollDelegate, $firebaseArray, $q, $localStorage, Data) {
       Data.init();
       Data.getMembers();
       var topics = [];
