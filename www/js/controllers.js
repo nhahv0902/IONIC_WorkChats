@@ -1,11 +1,17 @@
 var appControllers = angular.module('starter.controllers', ['firebase']); // Use for all controller of application.
 
-appControllers.controller('MainCtrl', function ($scope, $localStorage, Data) {
+appControllers.controller('MainCtrl', function ($scope, $localStorage, Data, ChatsGroups) {
   Data.init();
   Data.getMembers();
   Data.getTopics();
   Data.getGroups();
-  Data.getMemberRecent();
+
+  if ($localStorage.user != null && $localStorage.user.uid != null) {
+    Data.getMemberRecent($localStorage.user.uid);
+  }
+
+  Data.getMemberOfGroup();
+  ChatsGroups.getMemberOfTopic();
 });
 appControllers.controller('MembersCtrl', function ($scope, Chats) {
   $scope.chats = Chats.all();
@@ -15,14 +21,15 @@ appControllers.controller('MembersCtrl', function ($scope, Chats) {
 });
 
 
-
 appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
   $scope.change = {};
+  //noinspection JSUnresolvedVariable,JSUnresolvedFunction
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       $scope.change.useremail = user.email;
       $scope.change.userId = user.uid;
       var userId = user.uid;
+      //noinspection JSUnresolvedVariable,JSUnresolvedFunction
       return firebase.database().ref('/Users/' + userId).once('value').then(function (snapshot) {
         $scope.change.userphone = snapshot.val().phone;
         $scope.change.usersex = snapshot.val().sex;
@@ -33,9 +40,9 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
       console.log('not log in');
     }
   });
-  $scope.resetpass = function(){
-    $scope.change.userpassword ='';
-  }
+  $scope.resetpass = function () {
+    $scope.change.userpassword = '';
+  };
   $scope.saveChange = function () {
     firebase.auth().onAuthStateChanged(function (user) {
       //chage email
@@ -45,10 +52,10 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
         // An error happened.
       });
       //change password
-      if($scope.change.userpassword){
-        user.updatePassword($scope.change.userpassword).then(function() {
+      if ($scope.change.userpassword) {
+        user.updatePassword($scope.change.userpassword).then(function () {
           // Update successful.
-        }, function(error) {
+        }, function (error) {
           // An error happened.
         })
       }

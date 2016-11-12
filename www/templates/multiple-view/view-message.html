@@ -7,9 +7,9 @@
   <ion-content class="padding">
     <div style="height: 10px"></div>
 
-    <div class="list border-none" ng-repeat="chat in chatList">
-      <div class="item item-avatar-s chat-friend" ng-if="chat.idSend != idSend">
-        <img ng-src="{{chat.avatar}}">
+    <div class="list border-none" ng-repeat="item in message">
+      <div class="item item-avatar-s chat-friend" ng-if="item.idSend != idSend">
+        <img ng-src="{{item.avatar}}">
 
         <span class="badge avatar-badge avatar-badge-xs"
               ng-class="{'badge-positive':chat.user.friendType=='Messenger', 'badge-stable':chat.user.friendType=='facebook'}">
@@ -18,14 +18,14 @@
         </span>
 
         <p class="chat-text stable-bg">
-          {{chat.text}}</p>
+          {{item.text}}</p>
       </div>
 
-      <div class="item item-avatar-right-s chat-me text-right" ng-if="chat.idSend == idSend">
-        <img ng-src="{{chat.avatar}}">
+      <div class="item item-avatar-right-s chat-me text-right" ng-if="item.idSend == idSend">
+        <img ng-src="{{item.avatar}}">
 
         <p class="chat-text positive-bg text-left">
-          {{chat.text}}</p>
+          {{item.text}}</p>
       </div>
     </div>
 
@@ -41,5 +41,5 @@
     </form>
   </ion-footer-bar>
 
-  <multiple-views-support width="70%"/>
+  <multiple-views-support width="70%"></multiple-views-support>
 </ion-view>

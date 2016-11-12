@@ -5,65 +5,83 @@ angular.module('starter.services', ['firebase'])
 
     return {
       init: function () {
-        if ($localStorage.members === null) {
+        if ($localStorage.members == null) {
           $localStorage.members = [];
         }
 
-        if ($localStorage.topics === null) {
+        if ($localStorage.topics == null) {
           $localStorage.topics = [];
         }
 
-        if ($localStorage.groups === null) {
+        if ($localStorage.groups == null) {
           $localStorage.groups = [];
         }
-        if ($localStorage.message === null) {
+        if ($localStorage.message == null) {
           $localStorage.message = [];
         }
-        if ($localStorage.memberRecent === null) {
+        if ($localStorage.memberRecent == null) {
           $localStorage.memberRecent = [];
+        }
+        if ($localStorage.memberOfTopic == null) {
+          $localStorage.memberOfTopic = [];
+        }
+
+        if ($localStorage.memberOfGroup == null) {
+          $localStorage.memberOfGroup = [];
+        }
+        if ($localStorage.messageTopic == null) {
+          $localStorage.messageTopic = [];
         }
       },
 
       getMembers: function () {
-
+        //noinspection JSUnresolvedVariable,JSUnresolvedFunction
         var ref = firebase.database().ref().child("Users");
         $localStorage.members = $firebaseArray(ref);
       },
-      getTopics: function () {
-        var ref = firebase.database().ref().child("Topics");
-        $localStorage.topics = $firebaseArray(ref);
-      },
-      getGroups: function () {
 
+      getTopics: function () {
+        //noinspection JSUnresolvedVariable,JSUnresolvedFunction
+        $localStorage.topics
+          = $firebaseArray
+        (firebase.database().ref().child("Topics"));
+      },
+
+      getGroups: function () {
+        //noinspection JSUnresolvedVariable,JSUnresolvedFunction
         var ref = firebase.database().ref().child("GroupMember");
         $localStorage.groups = $firebaseArray(ref);
       },
-      getMessages: function (uId) {
 
+      getMessages: function (uId) {
+        //noinspection JSUnresolvedVariable,JSUnresolvedFunction
         var ref = firebase.database().ref().child("Messages").child(uId);
         $localStorage.message = $firebaseArray(ref);
       },
-      getMemberRecent: function () {
+
+      getMemberRecent: function (uId) {
         console.log("getMemberRecent");
 
-        var uId = $localStorage.user.uid;
         console.log(uId);
+        //noinspection JSUnresolvedVariable,JSUnresolvedFunction
         var ref = firebase.database().ref().child("Messages").child(uId);
         $firebaseArray(ref).$loaded().then(function (snapshot) {
           $localStorage.memberRecent = snapshot;
           $q.when($localStorage.members).then(function (dataMembers) {
-            for (var i = 0; i <  $localStorage.memberRecent.length; i++) {
+            for (var i = 0; i < $localStorage.memberRecent.length; i++) {
               for (var index = 0; index < dataMembers.length; index++) {
-                if ( $localStorage.memberRecent[i].$id === dataMembers[index].$id) {
+                if ($localStorage.memberRecent[i].$id === dataMembers[index].$id) {
                   $localStorage.memberRecent[i].information = dataMembers[index];
-                  console.log( $localStorage.memberRecent);
+                  console.log($localStorage.memberRecent);
                   break
                 }
               }
             }
           });
         });
+      },
 
+      getMemberOfGroup: function () {
       }
     }
   })
@@ -182,88 +200,6 @@ angular.module('starter.services', ['firebase'])
     }
   })
 
-  .factory('MessageService', function () {
-
-    var messages = [{
-      id: 0,
-      senderName: 'Joe',
-      subject: 'Hi there!',
-      content: 'Let\'s meet for dinner today! Please?',
-      avatar: 'http://ionicframework.com/img/docs/venkman.jpg'
-    }, {
-      id: 1,
-      senderName: 'Twitch.tv',
-      subject: 'Live stream today',
-      content: 'We\'re gonna go full stream at 20:00. Make sure to be there!',
-      avatar: 'http://ionicframework.com/img/docs/stantz.jpg'
-    }, {
-      id: 2,
-      senderName: 'eBay',
-      subject: 'Free shipping on branded cameras',
-      content: 'Good news! Starting December 20th, we will start shipping branded cameras!',
-      avatar: 'http://ionicframework.com/img/docs/spengler.jpg'
-    }, {
-      id: 3,
-      senderName: 'PayPal',
-      subject: 'Payment received from joe@gmail.com',
-      content: 'To see all transaction details, please log into your account.',
-      avatar: 'http://ionicframework.com/img/docs/winston.jpg'
-    }, {
-      id: 4,
-      senderName: 'Tully',
-      subject: 'Dogs!',
-      content: 'Who brought the dog?!',
-      avatar: 'http://ionicframework.com/img/docs/tully.jpg'
-    }, {
-      id: 5,
-      senderName: 'Dana',
-      subject: 'I am The Gatekeeper!',
-      content: 'yes, yes I am!',
-      avatar: 'http://ionicframework.com/img/docs/barrett.jpg'
-    }, {
-      id: 6,
-      senderName: 'Slimer',
-      subject: 'Need help!',
-      content: 'Can you please help me with this thing?',
-      avatar: 'http://ionicframework.com/img/docs/slimer.jpg'
-    }, {
-      id: 7,
-      senderName: 'Jordan',
-      subject: 'What\'s up?',
-      content: 'We haven\'t met for years!',
-      avatar: 'http://ionicframework.com/img/docs/venkman.jpg'
-    }, {
-      id: 8,
-      senderName: 'Joe',
-      subject: 'I like trains',
-      content: 'Trains are awesome. I like trains.',
-      avatar: 'http://ionicframework.com/img/docs/spengler.jpg'
-    }, {
-      id: 9,
-      senderName: 'PayPal',
-      subject: 'Payment received from joe@gmail.com',
-      content: 'To see all transaction details, please log into your account.',
-      avatar: 'http://ionicframework.com/img/docs/winston.jpg'
-    }, {
-      id: 10,
-      senderName: 'eBay',
-      subject: 'Free shipping on branded cameras',
-      content: 'Good news! Starting December 20th, we will start shipping branded cameras!',
-      avatar: 'http://ionicframework.com/img/docs/spengler.jpg'
-    },];
-
-    return {
-      all: function () {
-        return messages;
-      },
-      get: function (messageId) {
-        // Simple index lookup
-        return messages[messageId];
-      }
-    }
-  })
-
-
   .factory('ChatsSingle', function ($ionicScrollDelegate, $firebaseArray) {
     var chats = [];
     var chats2 = [];
@@ -314,8 +250,9 @@ angular.module('starter.services', ['firebase'])
       var membersGroup = [];
       var chats = [];
 
+
       return {
-        allChats: function () {
+        chats: function () {
           return chats;
         },
         allMemberTopic: function () {
@@ -371,36 +308,49 @@ angular.module('starter.services', ['firebase'])
         },
 
         getMemberOfTopic: function () {
-          var ref = firebase.database().ref("Topics").child('123123');
-          $firebaseObject(ref).$loaded().then(function (data) {
 
-              console.log("getMemberOfTopic");
-              var member = data.member;
+          var refTopic = firebase.database().ref('Topics');
+          $firebaseArray(refTopic).$loaded().then(function (data) {
+            console.log("getMemberOfTopic");
+            console.log(data);
 
-              $q.when($localStorage.members).then(function (dataMembers) {
+            for (var i = 0; i < data.length; i++) {
+              if (data[i].member != null) {
+                var members = data[i].member;
 
-                for (var i = 0; i < member.length; i++) {
-                  for (var index = 0; index < dataMembers.length; index++) {
-                    if (member[i] === dataMembers[index].$id) {
-                      member[i] = dataMembers[index];
-                      // console.log(data.member[i]);
-                      break
+                $q.when($localStorage.members).then(function (dataMembers) {
+                  for (var i = 0; i < members.length; i++) {
+                    for (var index = 0; index < dataMembers.length; index++) {
+                      if (members[i] === dataMembers[index].$id) {
+                        members[i] = dataMembers[index];
+                        break
+                      }
                     }
                   }
-                }
-                // console.log(data);
-              });
+                  $localStorage.memberOfTopic = data;
+                });
+              }
             }
-          );
+          });
+
         },
 
-        send: function (objectMessage) {
+        getMessageTopic: function (idTopic) {
+          //noinspection JSUnresolvedFunction,JSUnresolvedVariable
+
+          chats = $firebaseArray(firebase.database().ref('MessageTopic').child(idTopic));
+          console.log('getMessageTopic');
+          console.log(chats);
+
+        },
+
+        send: function (objectMessage, idTopic) {
+
           chats.$add(objectMessage).then(function (data) {
-            if (data) {
-              chats2.$add(objectMessage);
-              $ionicScrollDelegate.scrollBottom(true);
-            }
-          })
+            console.log("message added");
+            console.log(data);
+            $ionicScrollDelegate.scrollBottom(true);
+          });
         }
       }
     }

@@ -24,8 +24,6 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, Topics, $ionicMo
 
   ChatsGroups.getMemberOfTopic();
 
-  Data.getMemberRecent();
-
   $scope.topic ={};
   $scope.addTopic = function () {
     var newPostKey = firebase.database().ref('Topics').push().key;

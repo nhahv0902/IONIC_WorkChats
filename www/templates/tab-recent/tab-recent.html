@@ -14,33 +14,34 @@
         </button>
       </ion-item>
 
-      <span ng-repeat="member in members">
-                <ion-item class="item-remove-animate item-avatar" nav-direction="forward"
-                          href="#/tab/chats/{{member.$id}}"
-                          type="item-text-wrap">
-                    <img ng-src="{{member.information.avatar}}">
 
-                    <span class="badge avatar-badge avatar-badge-s"
-                          ng-class="{'badge-positive':true, 'badge-stable':true}"
-                          ng-if="true">
-                        <i class="icon ion-ios-bolt" ng-if="!true"></i>
-                        <i class="icon ion-social-facebook light" ng-if="true"></i>
+      <ion-list ng-repeat="member in members">
+        <ion-item class="item-remove-animate item-avatar item-icon-right" nav-direction="forward"
+                  href="#/tab/chats/{{member.$id}}"
+                  type="item-text-wrap">
+          <img ng-src="{{member.information.avatar}}">
+
+          <span class="badge avatar-badge avatar-badge-s"
+                ng-class="{'badge-positive':true, 'badge-stable':true}"
+                ng-if="true">
+                        <i class="icon ion-ios-bolt" ng-if="true"></i>
+
                     </span>
 
-                    <h3>
-                        <small>{{member.information.name}}</small>
-                    </h3>
+          <h3>
+            <small>{{member.information.name}}</small>
+          </h3>
 
-                  <p>{{room.latest_chat}}</p>
+          <p>{{room.latest_chat}}</p>
 
-                    <span class="item-note">{{room.activeTime}}</span>
+          <span class="item-note">{{room.activeTime}}</span>
+          <i class="icon ion-chevron-right icon-accessory"></i>
+          <ion-option-button class="button-assertive" ng-click="remove(room)">
+            Delete
+          </ion-option-button>
 
-                    <ion-option-button class="button-assertive" ng-click="remove(room)">
-                        Delete
-                    </ion-option-button>
-
-                </ion-item>
-            </span>
+        </ion-item>
+      </ion-list>
     </ion-list>
 
     <!--show when there is no activity-->

@@ -20,7 +20,6 @@ appControllers.controller('ChatDetailCtrl',
       $scope.idSend = "qFivPT4dnhcdJfGZwpsgIYVlIE73";
     }
 
-    var date = new Date();
 
     $ionicScrollDelegate.scrollBottom(true);
     ChatsSingle.get($scope.idSend, idReceiver);
@@ -28,8 +27,7 @@ appControllers.controller('ChatDetailCtrl',
 
     console.log($scope.chatList);
     $scope.sendChat = function (chatText) {
-
-      var time = date.getTime();
+      var time = (new Date()).getTime();
       var objectMessage = {
 
         time: time,

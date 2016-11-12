@@ -23,22 +23,20 @@ appControllers.controller('SignInCtrl', function ($scope, $state, $ionicLoading,
       template: 'Signing In...'
     });
 
+    //noinspection JSUnresolvedFunction
     $firebaseAuth().$signInWithEmailAndPassword(email, password)
       .then(function (user) {
 
         $localStorage.user = user;
-        Data.getMessages($localStorage.user.uid);
+        Data.getMessages(user.uid);
+        Data.getMemberRecent(user.uid);
         console.log($localStorage.user.uid);
         $ionicLoading.hide();
         $state.go('tab.recent');
 
 
       })
-      .catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
+      .catch(function () {
         var myPopup = $ionicPopup.show({
           title: 'Sign in  fault',
           subTitle: 'Email  or password do not match',
