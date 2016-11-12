@@ -1,4 +1,3 @@
-
 var app = angular.module('starter', ['ionic', 'starter.controllers',
   'starter.services', 'ngStorage', 'ngCordova', 'ngMaterial',
   'ionicMultipleViews', "firebase"]);
@@ -50,12 +49,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
       url: '/members',
       views: {
         'tab-members': {
-          templateUrl: 'templates/tab-member.html',
+          templateUrl: 'templates/tab-member/tab-member.html',
           controller: 'MembersCtrl'
         }
       }
     })
-    //
 
     .state('tab.groups', {
       url: '/groups',
@@ -102,7 +100,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
       url: '/account',
       views: {
         'tab-account': {
-          templateUrl: 'templates/tab-account.html',
+          templateUrl: 'templates/tab-account/tab-account.html',
           controller: 'AccountCtrl'
         }
       }

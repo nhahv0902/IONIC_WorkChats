@@ -66,5 +66,4 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, $ionicModal, Cha
   $scope.$on('modal.removed', function () {
     // Execute action
   });
-
 });
