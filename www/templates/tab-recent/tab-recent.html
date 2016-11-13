@@ -6,16 +6,21 @@
 
   <ion-content>
     <ion-list ng-if="members">
-      <ion-item>
-        <button class="button button-small button-block icon-left ion-ios-search"
-                ng-click="openSearch()"
-                style="margin: 0">
-          Search for people and groups
-        </button>
+
+      <ion-item class="input-search">
+        <label class="item-input-wrapper" style="background: none">
+          <i class="icon ion-ios-search-strong placeholder-icon"></i>
+          <input
+            type="search" class="filter-bar-search ng-valid ng-dirty ng-touched ng-valid-parse"
+            ng-model="textSearch"
+            placeholder="Search for people" style="font-weight: normal; width: 100%; height: auto">
+
+          <button class="filter-bar-clear button button-icon icon ion-ios-close-empty"
+                  ng-class="getClearButtonClass()"></button>
+        </label>
       </ion-item>
 
-
-      <ion-list ng-repeat="member in members">
+      <ion-list ng-repeat="member in members | filter : textSearch">
         <ion-item class="item-remove-animate item-avatar item-icon-right" nav-direction="forward"
                   href="#/tab/chats/{{member.$id}}"
                   type="item-text-wrap">

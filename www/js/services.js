@@ -270,6 +270,18 @@ angular.module('starter.services', ['firebase'])
             console.log("message added");
             console.log(data);
             $ionicScrollDelegate.scrollBottom(true);
+
+            var idSend = objectMessage.idSend;
+            var ref = firebase.database().ref('Topics').child(idTopic).child('member');
+            $firebaseArray(ref).$loaded().then(function (member) {
+              for (var index = 0; index < member.length; index++) {
+                if (member[index].$value == idSend) {
+                  return;
+                }
+              }
+              ref.child(idSend).set(idSend);
+            });
+
           });
         }
       }
