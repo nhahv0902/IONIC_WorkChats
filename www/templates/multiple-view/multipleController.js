@@ -4,18 +4,13 @@
 appControllers.controller('MessageListCtrl',
   function ($scope, $state, MultipleViewsManager, $stateParams, ChatsGroups, $localStorage) {
 
+    console.log('MessageListCtrl');
     //noinspection JSUnresolvedVariable
     var id = $stateParams.groupId;
+    console.log(id);
+    ChatsGroups.getMemberOfTopic(id);
+    $scope.members = $localStorage.memberOfTopic;
 
-    console.log($localStorage.memberOfTopic);
-    ChatsGroups.getMemberOfTopic();
-    for (var index = 0; index < $localStorage.memberOfTopic.length; index++) {
-
-      if (id == $localStorage.memberOfTopic[index].$id) {
-        $scope.members = $localStorage.memberOfTopic[index].member;
-        console.log($scope.members);
-      }
-    }
   });
 
 appControllers.controller('ViewMessageCtrl',

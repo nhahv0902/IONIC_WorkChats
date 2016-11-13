@@ -10,9 +10,6 @@ appControllers.controller('MainCtrl', function ($scope, $localStorage, Data, Cha
     Data.getMemberRecent($localStorage.user.uid);
     Data.getInformation($localStorage.user.uid);
   }
-
-
-  ChatsGroups.getMemberOfTopic();
 });
 
 

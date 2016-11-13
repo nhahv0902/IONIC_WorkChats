@@ -20,8 +20,6 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, $ionicModal, Cha
   ChatsGroups.getMemberOfGroups(groupId);
   $scope.members = ChatsGroups.allMemberGroup();
 
-  ChatsGroups.getMemberOfTopic();
-
   $scope.topic = {};
   $scope.addTopic = function () {
     var newPostKey = firebase.database().ref('Topics').push().key;
@@ -38,7 +36,7 @@ appControllers.controller('DetailGroupsCtrl', function ($scope, $ionicModal, Cha
       });
       save.child('members').child(user.uid).set(user.uid);
       var addtopic = firebase.database().ref("GroupMember").child(groupId).child('Topics').child(newPostKey).set(newPostKey);
-     
+
     });
     // firebase.database().ref('Topics/'+newPostKey+'/'+'members').push({
     //   idp: newPostKey

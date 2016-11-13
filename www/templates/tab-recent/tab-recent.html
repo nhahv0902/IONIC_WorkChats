@@ -8,18 +8,18 @@
     <ion-list ng-if="members">
 
       <form name="input" class="">
-        <label class=" input-search item-input-wrapper" style="background: none">
+        <span class=" input-search item-input-wrapper" style="background: none">
           <i class="icon ion-ios-search-strong placeholder-icon"></i>
           <input
             type="search" ng-model="search" name="searchName" required
             placeholder="Search for people" style="font-weight: normal; width: 100%; height: auto">
 
           <button class="filter-bar-clear button button-icon icon ion-ios-close-empty"
-                  ng-show="input.searchName.$valid" ng-click="btnClean()">
+                  ng-show="input.searchName.$valid" ng-click="btnClean(); search=null;">
 
           </button>
 
-        </label>
+        </span>
       </form>
 
       <ion-list ng-repeat="member in members | filter :search">

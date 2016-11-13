@@ -227,32 +227,25 @@ angular.module('starter.services', ['firebase'])
           );
         },
 
-        getMemberOfTopic: function () {
+        getMemberOfTopic: function (idTopic) {
 
-          var refTopic = firebase.database().ref('Topics');
+          var refTopic = firebase.database().ref('Topics').child(idTopic).child('member');
           $firebaseArray(refTopic).$loaded().then(function (data) {
-            console.log("getMemberOfTopic");
-            console.log(data);
-
-            for (var i = 0; i < data.length; i++) {
-              if (data[i].member != null) {
-                var members = data[i].member;
-
-                $q.when($localStorage.members).then(function (dataMembers) {
-                  for (var i = 0; i < members.length; i++) {
-                    for (var index = 0; index < dataMembers.length; index++) {
-                      if (members[i] === dataMembers[index].$id) {
-                        members[i] = dataMembers[index];
-                        break
-                      }
-                    }
+            $q.when($localStorage.members).then(function () {
+              var member = [];
+              console.log($localStorage.members);
+              for (var i = 0; i < data.length; i++) {
+                for (var index = 0; index < $localStorage.members.length; index++) {
+                  if (data[i].$id == $localStorage.members[index].$id) {
+                    member[i] = $localStorage.members[index];
+                    break;
                   }
-                  $localStorage.memberOfTopic = data;
-                });
+                }
               }
-            }
-          });
 
+              $localStorage.memberOfTopic = member;
+            });
+          });
         },
 
         getMessageTopic: function (idTopic) {
