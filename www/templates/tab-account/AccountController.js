@@ -15,6 +15,7 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal) {
         $scope.change.usersex = snapshot.val().sex;
         $scope.change.useraddress = snapshot.val().address;
         $scope.change.username = snapshot.val().name;
+        $scope.change.avatar = snapshot.val().avatar;
       });
     } else {
       console.log('not log in');
