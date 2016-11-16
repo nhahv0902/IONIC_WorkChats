@@ -49,6 +49,9 @@
         </ion-list>
       <p ng-show="changeinfo.address.$invalid" style="color: red; float: left">Address is required</p>
       <p style="clear: both;">
+      Image: <input type="file" name="file" onchange="angular.element(this).scope().photoChanged(this.files)">
+        <br />
+        <img ng-src="{{ thumbnail.dataUrl }}" />
         <ion-list class="border-none" ng-show="checked">
           <ion-item class="item-input border-bottom" ng-init="change.userpassword=''">
             <label>Password: </label>
