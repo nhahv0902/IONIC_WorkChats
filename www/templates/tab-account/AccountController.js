@@ -1,7 +1,7 @@
 /**
  * Created by Nhahv on 11/12/2016.
  */
-appControllers.controller('AccountCtrl', function ($scope, $ionicModal, $timeout) {
+appControllers.controller('AccountCtrl', function ($scope, $ionicModal, $timeout, $state) {
   $scope.change = {};
   var storageRef = firebase.storage().ref();
   //noinspection JSUnresolvedVariable,JSUnresolvedFunction
@@ -16,7 +16,7 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal, $timeout
         $scope.change.usersex = snapshot.val().sex;
         $scope.change.useraddress = snapshot.val().address;
         $scope.change.username = snapshot.val().name;
-        $scope.change.avatar = snapshot.val().avatar;
+       // $scope.change.avatar = snapshot.val().avatar;
         $scope.change.image = snapshot.val().image;
         storageRef.child($scope.change.userId).child($scope.change.image).getDownloadURL().then(function(url) {
           document.querySelector('#avatar').src = url;
@@ -83,6 +83,15 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal, $timeout
       image: $scope.change.imagename
     });
     $scope.closeModal();
+  };
+
+  $scope.logout = function(){
+    firebase.auth().signOut().then(function() {
+      console.log('Signed Out');
+      $state.go('singIn');
+    }, function(error) {
+      console.error('Sign Out Error', error);
+    });
   };
 
   $ionicModal.fromTemplateUrl('templates/popup/change.html', {
