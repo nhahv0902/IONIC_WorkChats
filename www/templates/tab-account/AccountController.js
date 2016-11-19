@@ -5,25 +5,27 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal, $timeout
   $scope.change = {};
   var storageRef = firebase.storage().ref();
   //noinspection JSUnresolvedVariable,JSUnresolvedFunction
+  $scope.getinfo = function(userId){
+    return firebase.database().ref('/Users/' + userId).once('value').then(function (snapshot) {
+        $scope.change.userphone = snapshot.val().phone;
+        $scope.change.usersex = snapshot.val().sex;
+        $scope.change.useraddress = snapshot.val().address;
+        $scope.change.username = snapshot.val().name;
+        $scope.change.image = snapshot.val().image;
+        storageRef.child(userId).child($scope.change.image).getDownloadURL().then(function(url) {
+          document.querySelector('#avatar').src = url;
+        }).catch(function(error) {
+          // Handle any errors
+        });
+      });
+  };
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       $scope.change.useremail = user.email;
       $scope.change.userId = user.uid;
       var userId = user.uid;
       //noinspection JSUnresolvedVariable,JSUnresolvedFunction
-      return firebase.database().ref('/Users/' + userId).once('value').then(function (snapshot) {
-        $scope.change.userphone = snapshot.val().phone;
-        $scope.change.usersex = snapshot.val().sex;
-        $scope.change.useraddress = snapshot.val().address;
-        $scope.change.username = snapshot.val().name;
-       // $scope.change.avatar = snapshot.val().avatar;
-        $scope.change.image = snapshot.val().image;
-        storageRef.child($scope.change.userId).child($scope.change.image).getDownloadURL().then(function(url) {
-          document.querySelector('#avatar').src = url;
-        }).catch(function(error) {
-          // Handle any errors
-        });
-      });
+      $scope.getinfo(userId);
     } else {
       console.log('not log in');
     }
@@ -83,6 +85,7 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal, $timeout
       image: $scope.change.imagename
     });
     $scope.closeModal();
+    $scope.getinfo($scope.change.userId);
   };
 
   $scope.logout = function(){
