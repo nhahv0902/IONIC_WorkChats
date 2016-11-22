@@ -6,16 +6,23 @@
 
   <ion-content>
     <ion-list ng-if="memberOfGroups">
-      <ion-item>
-        <button class="button button-small button-block icon-left ion-ios-search"
-                ng-click="openSearch()"
-                style="margin: 0">
-          Search for people and groups
-        </button>
-      </ion-item>
 
+      <form name="input" class="">
+        <span class=" input-search item-input-wrapper" style="background: none">
+          <i class="icon ion-ios-search-strong placeholder-icon"></i>
+          <input
+            type="search" ng-model="searchMember" name="searchName" required
+            placeholder="Search for people" style="font-weight: normal; width: 100%; height: auto">
 
-      <ion-list ng-repeat="member in memberOfGroups">
+          <button class="filter-bar-clear button button-icon icon ion-ios-close-empty"
+                  ng-show="input.searchName.$valid" ng-click="btnClean(); searchMember=null;">
+
+          </button>
+
+        </span>
+      </form>
+
+      <ion-list ng-repeat="member in memberOfGroups| filter:searchMember">
         <ion-item class="item-remove-animate item-avatar item-icon-right" nav-direction="forward"
                   href="#/tab/chatMember/{{member.$id}}"
                   type="item-text-wrap">
@@ -37,7 +44,7 @@
           <span class="item-note">{{room.activeTime}}</span>
           <i class="icon ion-chevron-right icon-accessory"></i>
           <!--<ion-option-button class="button-assertive" ng-click="remove(room)">-->
-            <!--Delete-->
+          <!--Delete-->
           <!--</ion-option-button>-->
 
         </ion-item>

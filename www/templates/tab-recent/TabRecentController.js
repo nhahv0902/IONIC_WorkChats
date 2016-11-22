@@ -4,7 +4,7 @@
 appControllers.controller('RecentCtrl', function ($scope, $localStorage, $rootScope) {
 
   $scope.members = $localStorage.memberRecent;
-  $scope.search = '5334534';
+  $scope.search = '';
 
   $rootScope.btnClean = function () {
     console.log('clear');
