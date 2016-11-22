@@ -76,17 +76,22 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal, $timeout
     //var storageRef = firebase.storage().ref().child($scope.change.userId+'/'+$scope.change.imagename);
     storageRef.child($scope.change.userId+'/'+$scope.change.imagename).put($scope.change.imagefile).then(function(snapshot) {
         console.log('Uploaded a blob or file!');
-        firebase.database().ref('Users/' + $scope.change.userId).set({
-          name: $scope.change.username,
-          sex: $scope.change.usersex,
-          phone: $scope.change.userphone,
-          address: $scope.change.useraddress,
-          image: $scope.change.imagename
-        });
-        $scope.getinfo($scope.change.userId);
-        $scope.closeModal();
-        });
-       
+        storageRef.child($scope.change.userId).child($scope.change.imagename).getDownloadURL().then(function(url) {
+         $scope.change.src = url;
+           firebase.database().ref('Users/' + $scope.change.userId).set({
+            name: $scope.change.username,
+            sex: $scope.change.usersex,
+            phone: $scope.change.userphone,
+            address: $scope.change.useraddress,
+            image: $scope.change.imagename,
+            avatar: $scope.change.src
+          });
+          $scope.getinfo($scope.change.userId);
+          $scope.closeModal();
+          });
+        }).catch(function(error) {
+          // Handle any errors
+        });      
   };
 
   $scope.logout = function(){
