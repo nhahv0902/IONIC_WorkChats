@@ -6,6 +6,7 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal, $timeout
   var storageRef = firebase.storage().ref();
   //noinspection JSUnresolvedVariable,JSUnresolvedFunction
   $scope.getinfo = function(userId){
+
     return firebase.database().ref('/Users/' + userId).once('value').then(function (snapshot) {
         $scope.change.userphone = snapshot.val().phone;
         $scope.change.usersex = snapshot.val().sex;
@@ -13,11 +14,6 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal, $timeout
         $scope.change.username = snapshot.val().name;
         $scope.change.image = snapshot.val().image;
         $scope.change.avatar = snapshot.val().avatar;
-        // storageRef.child(userId).child($scope.change.image).getDownloadURL().then(function(url) {
-        //   document.querySelector('#avatar').src = url;
-        // }).catch(function(error) {
-        //   // Handle any errors
-        // });
       });
   };
   firebase.auth().onAuthStateChanged(function (user) {
@@ -85,13 +81,15 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal, $timeout
       storageRef.child($scope.change.userId+'/'+$scope.change.imagename).put($scope.change.imagefile).then(function(snapshot) {
       console.log('Uploaded a blob or file!');
       storageRef.child($scope.change.userId).child($scope.change.imagename).getDownloadURL().then(function(url) {
-       $scope.change.src = url;
+          $scope.change.src = url;
          firebase.database().ref('Users/' + $scope.change.userId).update({
           image: $scope.change.imagename,
           avatar: $scope.change.src
-        });
-        });
-      $scope.getinfo($scope.change.userId);
+          });
+         
+         $scope.getinfo($scope.change.userId);
+      });
+      
       }).catch(function(error) {
         // Handle any errors
       });
