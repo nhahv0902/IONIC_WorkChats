@@ -12,11 +12,12 @@ appControllers.controller('AccountCtrl', function ($scope, $ionicModal, $timeout
         $scope.change.useraddress = snapshot.val().address;
         $scope.change.username = snapshot.val().name;
         $scope.change.image = snapshot.val().image;
-        storageRef.child(userId).child($scope.change.image).getDownloadURL().then(function(url) {
-          document.querySelector('#avatar').src = url;
-        }).catch(function(error) {
-          // Handle any errors
-        });
+        $scope.change.avatar = snapshot.val().avatar;
+        // storageRef.child(userId).child($scope.change.image).getDownloadURL().then(function(url) {
+        //   document.querySelector('#avatar').src = url;
+        // }).catch(function(error) {
+        //   // Handle any errors
+        // });
       });
   };
   firebase.auth().onAuthStateChanged(function (user) {
