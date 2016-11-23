@@ -12,12 +12,15 @@ appControllers.controller('ChatDetailCtrl',
     $scope.chat.name = "hoang Van Nha";
     $scope.idSend = $localStorage.user.uid;
     var idReceiver = $stateParams.chatId;
-    if (idReceiver === "123456789") {
-      idReceiver = "qFivPT4dnhcdJfGZwpsgIYVlIE73";
-    } else {
-      idReceiver = "nFtxMfo3pXbsF73SsnVqedkNlso2";
-      $scope.idSend = "qFivPT4dnhcdJfGZwpsgIYVlIE73";
-    }
+
+    console.log($scope.idSend);
+    console.log(idReceiver);
+    // if (idReceiver === "123456789") {
+    //   idReceiver = "qFivPT4dnhcdJfGZwpsgIYVlIE73";
+    // } else {
+    //   idReceiver = "nFtxMfo3pXbsF73SsnVqedkNlso2";
+    //   $scope.idSend = "qFivPT4dnhcdJfGZwpsgIYVlIE73";
+    // }
 
     var information = $localStorage.account;
 
