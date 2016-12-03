@@ -27,12 +27,15 @@
           {{chat.text}}</p>
       </div>
     </div>
+
   </ion-content>
   <ion-footer-bar class="bar-light chat-bar">
     <form class="row" name="theform">
-      <input class="col col-75" type="text" ng-model="chatText" ng-minlength="1" ng-required="true" title="">
+      <input class="col col-75" type="text" ng-model="chatText"
+             ng-minlength="1" ng-required="true" title="" data-emojiable="true">
       <button class="col button" ng-click="sendChat(chatText); chatText = null" ng-disabled="theform.$invalid">Send
       </button>
     </form>
+
   </ion-footer-bar>
 </ion-view>

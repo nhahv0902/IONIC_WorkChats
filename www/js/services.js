@@ -121,46 +121,44 @@ angular.module('starter.services', ['firebase'])
     }
   })
 
-  .factory('ChatsSingle', function ($ionicScrollDelegate, $firebaseArray) {
-    var chats = [];
-    var chats2 = [];
+  .factory('ChatsSingle', function ($ionicScrollDelegate, $firebaseArray, $rootScope, $q) {
+      var chats = [];
 
-    return {
-      all: function () {
-        return chats;
-      },
-      get: function (idSend, idReceiver) {
+      return {
+        all: function () {
+          return chats;
+        },
+        get: function (idSend, idReceiver) {
 
-        var ref = firebase.database()
-          .ref("Messages/" + idSend + "/" + idReceiver);
-
-        chats = $firebaseArray(ref);
-        chats.$loaded().then(function (data) {
-          console.log("chat");
-          chats = data;
-          $ionicScrollDelegate.scrollBottom(true);
-        });
-
-        var ref2 = firebase.database()
-          .ref()
-          .child("Messages")
-          .child(idReceiver)
-          .child(idSend);
-        chats2 = $firebaseArray(ref2);
-      },
-      send: function (objectMessage) {
-        chats.$add(objectMessage).then(function (data) {
-          if (data) {
-            chats2.$add(objectMessage);
-            console.log("message added");
-            $ionicScrollDelegate.scrollBottom(true);
-          }
-        })
+          var ref = firebase.database()
+            .ref("Messages/" + idSend + "/" + idReceiver);
+          ref.on('child_added', function (snapshot) {
+            chats.push(snapshot.val());
+            $q.when(chats).then(function () {
+              $ionicScrollDelegate.scrollBottom(true);
+            });
+          });
+        },
+        send: function (objectMessage) {
+          console.log(objectMessage);
+          var ref = firebase.database().ref('Messages');
+          ref
+            .child(objectMessage.idSend)
+            .child(objectMessage.idReceiver)
+            .child(objectMessage.key)
+            .set(objectMessage, function (error) {
+              if (!error) {
+                ref.child(objectMessage.idReceiver)
+                  .child(objectMessage.idSend)
+                  .child(objectMessage.key)
+                  .set(objectMessage);
+                $ionicScrollDelegate.scrollBottom(true);
+              }
+            });
+        }
       }
     }
-  })
-
-
+  )
   .factory('ChatsGroups', function ($ionicScrollDelegate, $firebaseArray, $q, $localStorage, Data) {
       Data.init();
       Data.getMembers();
@@ -189,7 +187,6 @@ angular.module('starter.services', ['firebase'])
           // get topics of grops
           var ref = firebase.database().ref("GroupMember").child(groupId).child('Members');
           $firebaseArray(ref).$loaded().then(function (data) {
-
               $q.when($localStorage.members).then(function (dataMembers) {
 
                 for (var i = 0; i < data.length; i++) {
@@ -204,7 +201,6 @@ angular.module('starter.services', ['firebase'])
               });
             }
           );
-
         },
 
         getTopicsOfGroup: function (groupId) {
@@ -279,5 +275,5 @@ angular.module('starter.services', ['firebase'])
         }
       }
     }
-  )
-;
+  );
+

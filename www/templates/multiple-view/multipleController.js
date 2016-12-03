@@ -14,8 +14,7 @@ appControllers.controller('MessageListCtrl',
   });
 
 appControllers.controller('ViewMessageCtrl',
-  function ($scope, $stateParams, MultipleViewsManager, $ionicScrollDelegate,
-            ChatsGroups, $localStorage, $q) {
+  function ($scope, $stateParams, MultipleViewsManager, $ionicScrollDelegate, ChatsGroups, $localStorage, $q) {
 
     //noinspection JSUnresolvedVariable
     var id = $stateParams.groupId;
@@ -41,7 +40,13 @@ appControllers.controller('ViewMessageCtrl',
         text: chatText,
         avatar: information.avatar
       };
-      ChatsGroups.send(objectMessage, id);
+
+      firebase.database().ref('MessageTopic').child(id).push().set(objectMessage, function (error) {
+        if (!error) {
+          $ionicScrollDelegate.scrollBottom(true);
+        }
+      });
+      // ChatsGroups.send(objectMessage, id);
     };
   });
 
